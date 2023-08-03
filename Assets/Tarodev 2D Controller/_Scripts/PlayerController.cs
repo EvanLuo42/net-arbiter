@@ -149,7 +149,9 @@ namespace TarodevController {
         private void DeathChecks()
         {
             if (!_colDanmaku) return;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            sceneTransitionAnimator
+                .GetComponent<SceneTransitionController>()
+                .SetTransition(SceneManager.GetActiveScene().name);
         }
 
         private void CalculateRayRanged() {

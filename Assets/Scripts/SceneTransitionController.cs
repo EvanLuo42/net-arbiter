@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,16 +6,15 @@ public class SceneTransitionController : MonoBehaviour
 {
     // 正在加载场景名称
     private string _nextScene = "";
-    private bool _reload;
+    private Animator animator;
 
-    private void Awake()
+    private void Start()
     {
-        Animator animator = gameObject.GetComponentInChildren<Animator>();
-        animator.Play("FadeIn");
+        animator = gameObject.GetComponentInChildren<Animator>();
     }
 
     // 从淡出动画结束时触发
-    public void FadeOutFinished()
+    private void FadeOutFinished()
     {
         // 下一个场景的加载
         SceneManager.LoadScene(_nextScene);
@@ -22,7 +22,7 @@ public class SceneTransitionController : MonoBehaviour
 
     public void SetTransition(string nextScene)
     {
-        _reload = true;
         _nextScene = nextScene;
+        animator.SetTrigger("FadeOut");
     }
 }
