@@ -8,8 +8,7 @@ public class DanmakuController : MonoBehaviour
     public float interval;
     public float lifetime;
     public GameObject danmakuPrefab;
-    public float danmakuSpeedX;
-    public float danmakuSpeedY;
+    public float danmakuSpeed;
     private Dictionary<float, GameObject> _danmakus = new();
     private float _passedTime;
     private float _lastShootTime;
@@ -19,21 +18,21 @@ public class DanmakuController : MonoBehaviour
         _passedTime += Time.deltaTime;
         foreach (var danmakuPair in _danmakus)
         {
-            if (danmakuPair.Value.GetComponent<Danmaku>().destory || _passedTime - danmakuPair.Key > lifetime)
+            if (danmakuPair.Value.GetComponent<Danmaku>().destroy || _passedTime - danmakuPair.Key > lifetime)
             {
                 _danmakus.Remove(danmakuPair.Key);
                 Destroy(danmakuPair.Value);
             }
 
-            var danmukuCurrentPosition = danmakuPair.Value.transform.position;
-            danmakuPair.Value.transform.position = new Vector3(danmukuCurrentPosition.x + danmakuSpeedX * Time.deltaTime,
-                danmukuCurrentPosition.y + danmakuSpeedY * Time.deltaTime, danmukuCurrentPosition.z);
+            var danmaku = danmakuPair.Value;
+            Vector3 velocity = danmaku.GetComponent<Danmaku>().direction * danmakuSpeed;
+            danmakuPair.Value.transform.position += velocity * Time.deltaTime; 
         }
 
         if (!(_passedTime - _lastShootTime > interval)) return;
         
         var newDanmaku = Instantiate(danmakuPrefab, transform, true);
-        newDanmaku.transform.position = transform.position;
+        newDanmaku.GetComponent<Danmaku>().direction = Vector2.left;
         _danmakus.Add(_passedTime, newDanmaku);
         _lastShootTime = _passedTime;
     }

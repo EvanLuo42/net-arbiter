@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -40,6 +41,9 @@ namespace TarodevController {
             CalculateRayRanged();
             RunDanmakuCollisionChecks();
             RunEnvironmentCollisionChecks();
+            RunBulletCollisionChecks();
+            
+            BounceBullet();
             
             DeathChecks();
 
@@ -69,9 +73,11 @@ namespace TarodevController {
 
         #region Collisions
 
-        [Header("COLLISION")] [SerializeField] private Bounds _characterBounds;
+        [Header("COLLISION")] [SerializeField] private bool enableDanmaku = true;
+        [SerializeField] private Bounds _characterBounds;
         [SerializeField] private LayerMask _groundLayer;
         [SerializeField] private LayerMask _danmakuLayer;
+        [SerializeField] private LayerMask _bulletLayer;
         [SerializeField] private int _detectorCount = 3;
         [SerializeField] private float _detectionRayLength = 0.1f;
         [SerializeField] [Range(0.1f, 0.3f)] private float _rayBuffer = 0.1f; // Prevents side detectors hitting the ground
@@ -79,6 +85,7 @@ namespace TarodevController {
         private RayRange _raysUp, _raysRight, _raysDown, _raysLeft;
         private bool _colUp, _colRight, _colDown, _colLeft;
         private bool _colDanmaku, _colDanmakuGround;
+        private bool _colBullet;
 
         private float _timeLeftGrounded;
 
@@ -112,6 +119,7 @@ namespace TarodevController {
 
         private void RunDanmakuCollisionChecks()
         {
+            if (!enableDanmaku) return;
             // Ground
             LandingThisFrame = false;
             var groundedCheck = RunDetection(_raysDown);
@@ -139,7 +147,23 @@ namespace TarodevController {
                     var hit = Physics2D.Raycast(point, range.Dir, _detectionRayLength, _danmakuLayer);
                     if (!hit) continue;
                     var danmaku = hit.collider.gameObject;
-                    danmaku.GetComponent<Danmaku>().destory = true;
+                    danmaku.GetComponent<Danmaku>().destroy = true;
+                    return hit;
+                }
+                return false;
+            }
+        }
+
+        private void RunBulletCollisionChecks()
+        {
+            if (!bounceEnabled) return;
+            _colDanmaku = RunDetection(_raysUp) || RunDetection(_raysLeft) || RunDetection(_raysRight) || RunDetection(_raysDown);
+            
+            bool RunDetection(RayRange range) {
+                foreach (var point in EvaluateRayPositions(range))
+                {
+                    var hit = Physics2D.Raycast(point, range.Dir, _detectionRayLength, _bulletLayer);
+                    if (!hit) continue;
                     return hit;
                 }
                 return false;
@@ -148,7 +172,7 @@ namespace TarodevController {
 
         private void DeathChecks()
         {
-            if (!_colDanmaku) return;
+            if (!_colDanmaku && !_colBullet) return;
             sceneTransitionAnimator
                 .GetComponent<SceneTransitionController>()
                 .SetTransition(SceneManager.GetActiveScene().name);
@@ -257,6 +281,27 @@ namespace TarodevController {
 
         #endregion
 
+        #region Bounce
+
+        [Header("BOUNCE")] [SerializeField] private bool bounceEnabled;
+        [SerializeField] private float overlapBoxSizeX;
+        [SerializeField] private float overlapBoxSizeY;
+        [SerializeField] private float overlapBoxOffSetX;
+        [SerializeField] private float overlapBoxOffSetY;
+        
+        private void BounceBullet()
+        {
+            if (!bounceEnabled) return;
+            if (!UnityEngine.Input.GetKeyDown(KeyCode.F)) return;
+            var bullet = Physics2D.OverlapBox(transform.position + new Vector3(overlapBoxOffSetX, overlapBoxOffSetY, 0), new Vector2(overlapBoxSizeX, overlapBoxSizeY), 0, _bulletLayer);
+            if (!bullet) return;
+            var bulletController = bullet.GetComponent<Bullet>();
+            var mousePosition = Camera.main.ScreenToWorldPoint(UnityEngine.Input.mousePosition);
+            bulletController.direction = (mousePosition - transform.position).normalized;
+        }
+
+        #endregion
+
         #region Jump
 
         [Header("JUMPING")] [SerializeField] private float _jumpHeight = 30;
@@ -270,8 +315,6 @@ namespace TarodevController {
         private float _lastJumpPressed;
         private bool CanUseCoyote => _coyoteUsable && !_colDown && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
         private bool HasBufferedJump => _colDown && _lastJumpPressed + _jumpBuffer > Time.time;
-
-        private bool isOnDanmaku;
 
         private void CalculateJumpApex() {
             if (!_colDown) {
