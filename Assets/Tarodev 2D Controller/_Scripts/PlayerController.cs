@@ -26,8 +26,12 @@ namespace TarodevController {
 
         public GameObject sceneTransitionAnimator;
 
+        public GameObject playerVisual;
+
         // This is horrible, but for some reason colliders are not fully established when update starts...
         private bool _active;
+
+        private bool _canControl = true;
 
         void Awake()
         {
@@ -53,11 +57,13 @@ namespace TarodevController {
             
             DeathChecks();
 
-            CalculateWalk(); // Horizontal movement
+            if (_canControl) CalculateWalk(); // Horizontal movement
+            CalculateDash();
             CalculateJumpApex(); // Affects fall speed, so calculate before gravity
             CalculateGravity(); // Vertical movement
             CalculateJump(); // Possibly overrides vertical
 
+            // OnDrawGizmos();
             MoveCharacter(); // Actually perform the axis movement
         }
 
@@ -68,7 +74,8 @@ namespace TarodevController {
             Input = new FrameInput {
                 JumpDown = UnityEngine.Input.GetButtonDown("Jump"),
                 JumpUp = UnityEngine.Input.GetButtonUp("Jump"),
-                X = UnityEngine.Input.GetAxisRaw("Horizontal")
+                X = UnityEngine.Input.GetAxisRaw("Horizontal"),
+                Y = UnityEngine.Input.GetAxisRaw("Vertical")
             };
             if (Input.JumpDown) {
                 _lastJumpPressed = Time.time;
@@ -227,6 +234,55 @@ namespace TarodevController {
         }
 
         #endregion
+        
+        #region Dash
+        
+        [Header("DASH")]
+        [SerializeField] private float dashTime;
+        [SerializeField] private float dashSpeed;
+        [SerializeField] private float dashCooldown;
+        [SerializeField] private float notMovableInterval;
+        
+        private bool _isDashing;
+        private bool _canDash;
+        private float _dashDeltaTime;
+        private float _passedTime;
+
+        private void CalculateDash()
+        {
+            if (Grounded)
+            {
+                _canDash = true;
+            }
+
+            if (_dashDeltaTime >= dashTime)
+            {
+                _dashDeltaTime = 0;
+                _isDashing = false;
+            }
+            if (UnityEngine.Input.GetKeyDown(KeyCode.X) && _canDash)
+            {
+                _isDashing = true;
+                _canControl = false;
+                _canDash = false;
+            }
+
+            if (_dashDeltaTime >= notMovableInterval) _canControl = true;
+
+            if (!_isDashing) return;
+            
+            _dashDeltaTime += Time.deltaTime - _passedTime;
+            var direction = Input is { X: 0, Y: 0 } ? new Vector2(playerVisual.transform.localScale.x, 0) : new Vector2(Input.X, Input.Y);
+            var velocity = direction * dashSpeed;
+            _currentHorizontalSpeed = velocity.x;
+            _currentVerticalSpeed = velocity.y;
+            if (_currentHorizontalSpeed > 0 && _colRight || _currentHorizontalSpeed < 0 && _colLeft || _currentVerticalSpeed > 0 && _colUp) {
+                // Don't walk through walls
+                _currentHorizontalSpeed = 0;
+            }
+        }
+
+        #endregion
 
 
         #region Walk
@@ -311,19 +367,22 @@ namespace TarodevController {
 
         #endregion
 
-        #region Jump
+        #region
 
         [Header("JUMPING")] [SerializeField] private float _jumpHeight = 30;
         [SerializeField] private float _jumpApexThreshold = 10f;
         [SerializeField] private float _coyoteTimeThreshold = 0.1f;
         [SerializeField] private float _jumpBuffer = 0.1f;
         [SerializeField] private float _jumpEndEarlyGravityModifier = 3;
+        [SerializeField] private int maxJumpTimes = 1;
+        private int _currentJumpedTimes;
         private bool _coyoteUsable;
         private bool _endedJumpEarly = true;
         private float _apexPoint; // Becomes 1 at the apex of a jump
         private float _lastJumpPressed;
         private bool CanUseCoyote => _coyoteUsable && !_colDown && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
         private bool HasBufferedJump => _colDown && _lastJumpPressed + _jumpBuffer > Time.time;
+        private bool HasDoubleJump => !_colDown && _currentJumpedTimes <= maxJumpTimes - 1;
 
         private void CalculateJumpApex() {
             if (!_colDown) {
@@ -338,12 +397,14 @@ namespace TarodevController {
 
         private void CalculateJump() {
             // Jump if: grounded or within coyote threshold || sufficient jump buffer
-            if (Input.JumpDown && CanUseCoyote || HasBufferedJump || _colDanmakuGround) {
+            if (Input.JumpDown && CanUseCoyote || HasBufferedJump || _colDanmakuGround || Input.JumpDown && HasDoubleJump) {
+                Debug.Log(HasDoubleJump);
                 _currentVerticalSpeed = _jumpHeight;
                 _endedJumpEarly = false;
                 _coyoteUsable = false;
                 _timeLeftGrounded = float.MinValue;
                 JumpingThisFrame = true;
+                _currentJumpedTimes++;
             }
             else {
                 JumpingThisFrame = false;
@@ -353,6 +414,11 @@ namespace TarodevController {
             if (!_colDown && Input.JumpUp && !_endedJumpEarly && Velocity.y > 0) {
                 // _currentVerticalSpeed = 0;
                 _endedJumpEarly = true;
+            }
+
+            if (_colDown || _colDanmaku)
+            {
+                _currentJumpedTimes = 0;
             }
 
             if (_colUp) {
