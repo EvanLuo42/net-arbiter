@@ -1,15 +1,16 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = System.Random;
 
 public class BulletShooter : MonoBehaviour
 {
     public float delay;
     public float interval;
     public float lifetime;
+    public float destroyableTime;
     public GameObject bulletPrefab;
     public float bulletSpeed;
-    private Dictionary<float, GameObject> _bullets = new();
+    public readonly Dictionary<float, Tuple<GameObject, Bullet>> Bullets = new();
     private float _passedTime;
     private float _lastShootTime;
     private float _lastUpdateTime;
@@ -22,26 +23,34 @@ public class BulletShooter : MonoBehaviour
             _lastUpdateTime = Time.deltaTime;
             return;
         }
-        
-        foreach (var bulletPair in _bullets)
+
+        var bulletsKeys = new List<float>(Bullets.Keys);
+        foreach (var time in bulletsKeys)
         {
-            var bullet = bulletPair.Value.GetComponent<Bullet>();
-            if (bullet.destroy || _passedTime - bulletPair.Key > lifetime)
+            var bulletController = Bullets[time].Item2;
+            if (bulletController.destroy || _passedTime - time > lifetime)
             {
-                _bullets.Remove(bulletPair.Key);
-                Destroy(bulletPair.Value);
+                Destroy(Bullets[time].Item1);
+                Bullets.Remove(time);
+                continue;
             }
 
-            Vector3 velocity = bullet.direction * bulletSpeed;
-            bulletPair.Value.transform.position += velocity * Time.deltaTime;
+            if (_passedTime - time > destroyableTime)
+            {
+                bulletController.destroyable = true;
+            }
+
+            Vector3 velocity = bulletController.direction * bulletSpeed;
+            Bullets[time].Item1.transform.position += velocity * Time.deltaTime;
         }
 
         if (!(_passedTime - _lastShootTime > interval)) return;
         
         var newBullet = Instantiate(bulletPrefab, transform, true);
         newBullet.transform.position = transform.position;
-        newBullet.GetComponent<Bullet>().direction = Vector2.left;
-        _bullets.Add(_passedTime, newBullet);
+        var newBulletController = newBullet.GetComponent<Bullet>();
+        newBulletController.direction = Vector2.left;
+        Bullets.Add(_passedTime, new Tuple<GameObject, Bullet>(newBullet, newBulletController));
         _lastShootTime = _passedTime;
     }
 }

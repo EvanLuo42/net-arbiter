@@ -9,31 +9,32 @@ public class DanmakuController : MonoBehaviour
     public float lifetime;
     public GameObject danmakuPrefab;
     public float danmakuSpeed;
-    private Dictionary<float, GameObject> _danmakus = new();
+    private Dictionary<float, Tuple<GameObject, Danmaku>> _danmakus = new();
     private float _passedTime;
     private float _lastShootTime;
 
     private void Update()
     {
         _passedTime += Time.deltaTime;
-        foreach (var danmakuPair in _danmakus)
+        var danmakusKeys = new List<float>(_danmakus.Keys);
+        foreach (var time in danmakusKeys)
         {
-            if (danmakuPair.Value.GetComponent<Danmaku>().destroy || _passedTime - danmakuPair.Key > lifetime)
+            if (_danmakus[time].Item2.destroy || _passedTime - time > lifetime)
             {
-                _danmakus.Remove(danmakuPair.Key);
-                Destroy(danmakuPair.Value);
+                Destroy(_danmakus[time].Item1);
+                _danmakus.Remove(time);
+                continue;
             }
-
-            var danmaku = danmakuPair.Value;
-            Vector3 velocity = danmaku.GetComponent<Danmaku>().direction * danmakuSpeed;
-            danmakuPair.Value.transform.position += velocity * Time.deltaTime; 
+            Vector3 velocity = _danmakus[time].Item2.direction * danmakuSpeed;
+            _danmakus[time].Item2.transform.position += velocity * Time.deltaTime; 
         }
 
         if (!(_passedTime - _lastShootTime > interval)) return;
         
         var newDanmaku = Instantiate(danmakuPrefab, transform, true);
-        newDanmaku.GetComponent<Danmaku>().direction = Vector2.left;
-        _danmakus.Add(_passedTime, newDanmaku);
+        var newDanmakuController = newDanmaku.GetComponent<Danmaku>();
+        newDanmakuController.direction = Vector2.left;
+        _danmakus.Add(_passedTime, new Tuple<GameObject, Danmaku>(newDanmaku, newDanmakuController));
         _lastShootTime = _passedTime;
     }
 }

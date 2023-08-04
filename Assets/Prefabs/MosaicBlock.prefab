@@ -97,6 +97,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3caa84e80395149998065104b67140ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BulletMask:
-    serializedVersion: 2
-    m_Bits: 256
+  bulletShooter: {fileID: 0}
+  collisionRadius: 0.5

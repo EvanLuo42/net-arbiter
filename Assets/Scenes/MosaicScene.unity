@@ -130,6 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 418234479}
     m_Modifications:
+    - target: {fileID: 4422003204151870372, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
+      propertyPath: bulletShooter
+      value: 
+      objectReference: {fileID: 1850094895}
     - target: {fileID: 7631807814118882576, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -2372,6 +2376,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 418234479}
     m_Modifications:
+    - target: {fileID: 4422003204151870372, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
+      propertyPath: bulletShooter
+      value: 
+      objectReference: {fileID: 1850094895}
     - target: {fileID: 7631807814118882576, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -2760,6 +2768,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 418234479}
     m_Modifications:
+    - target: {fileID: 4422003204151870372, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
+      propertyPath: bulletShooter
+      value: 
+      objectReference: {fileID: 1850094895}
     - target: {fileID: 7631807814118882576, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -2941,6 +2953,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 418234479}
     m_Modifications:
+    - target: {fileID: 4422003204151870372, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
+      propertyPath: bulletShooter
+      value: 
+      objectReference: {fileID: 1850094895}
     - target: {fileID: 7631807814118882576, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -3121,6 +3137,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 418234479}
     m_Modifications:
+    - target: {fileID: 4422003204151870372, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
+      propertyPath: bulletShooter
+      value: 
+      objectReference: {fileID: 1850094895}
     - target: {fileID: 7631807814118882576, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -3183,6 +3203,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 418234479}
     m_Modifications:
+    - target: {fileID: 4422003204151870372, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
+      propertyPath: bulletShooter
+      value: 
+      objectReference: {fileID: 1850094895}
     - target: {fileID: 7631807814118882576, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -3245,6 +3269,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 418234479}
     m_Modifications:
+    - target: {fileID: 4422003204151870372, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
+      propertyPath: bulletShooter
+      value: 
+      objectReference: {fileID: 1850094895}
     - target: {fileID: 7631807814118882576, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -3347,6 +3375,7 @@ MonoBehaviour:
   delay: 3
   interval: 1
   lifetime: 5
+  destroyableTime: 2
   bulletPrefab: {fileID: 1615789642748547853, guid: 1351bb037d2fb4053a965dd74a406a43, type: 3}
   bulletSpeed: 5
 --- !u!1 &1947994568
@@ -3407,11 +3436,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: overlapBoxSizeX
-      value: 2.37
+      value: 3.83
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: overlapBoxSizeY
-      value: 3.57
+      value: 4.55
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: overlapBoxOffSetX
@@ -3503,6 +3532,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 418234479}
     m_Modifications:
+    - target: {fileID: 4422003204151870372, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
+      propertyPath: bulletShooter
+      value: 
+      objectReference: {fileID: 1850094895}
     - target: {fileID: 7631807814118882576, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -3565,6 +3598,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 418234479}
     m_Modifications:
+    - target: {fileID: 4422003204151870372, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
+      propertyPath: bulletShooter
+      value: 
+      objectReference: {fileID: 1850094895}
+    - target: {fileID: 4422003204151870372, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
+      propertyPath: collisionRadius
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7631807814118882576, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
       propertyPath: m_RootOrder
       value: 0

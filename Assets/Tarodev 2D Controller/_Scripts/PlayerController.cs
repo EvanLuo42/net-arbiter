@@ -28,7 +28,13 @@ namespace TarodevController {
 
         // This is horrible, but for some reason colliders are not fully established when update starts...
         private bool _active;
-        void Awake() => Invoke(nameof(Activate), 0.5f);
+
+        void Awake()
+        {
+            Invoke(nameof(Activate), 0.5f);
+            _mainCamera = Camera.main;
+        }
+        
         void Activate() =>  _active = true;
 
         private void Update() {
@@ -289,6 +295,8 @@ namespace TarodevController {
         [SerializeField] private float overlapBoxOffSetX;
         [SerializeField] private float overlapBoxOffSetY;
         
+        private Camera _mainCamera;
+        
         private void BounceBullet()
         {
             if (!bounceEnabled) return;
@@ -296,7 +304,8 @@ namespace TarodevController {
             var bullet = Physics2D.OverlapBox(transform.position + new Vector3(overlapBoxOffSetX, overlapBoxOffSetY, 0), new Vector2(overlapBoxSizeX, overlapBoxSizeY), 0, _bulletLayer);
             if (!bullet) return;
             var bulletController = bullet.GetComponent<Bullet>();
-            var mousePosition = Camera.main.ScreenToWorldPoint(UnityEngine.Input.mousePosition);
+            if (_mainCamera is null) return;
+            var mousePosition = _mainCamera.ScreenToWorldPoint(UnityEngine.Input.mousePosition);
             bulletController.direction = (mousePosition - transform.position).normalized;
         }
 
