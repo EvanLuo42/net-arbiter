@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -59,6 +60,7 @@ namespace TarodevController {
             DeathChecks();
 
             if (_canControl) CalculateWalk(); // Horizontal movement
+            CalculateAttack();
             CalculateDash();
             CalculateJumpApex(); // Affects fall speed, so calculate before gravity
             CalculateGravity(); // Vertical movement
@@ -140,10 +142,17 @@ namespace TarodevController {
             _colEnemy = RunDetection(_raysUp) || RunDetection(_raysLeft) || RunDetection(_raysRight) ||
                         RunDetection(_raysDown);
 
-            if (_colEnemy) _dead = true;
-
             bool RunDetection(RayRange range) {
-                return EvaluateRayPositions(range).Any(point => Physics2D.Raycast(point, range.Dir, _detectionRayLength, _enemyLayer));
+                foreach (var point in EvaluateRayPositions(range))
+                {
+                    var hit = Physics2D.Raycast(point, range.Dir, _detectionRayLength, _enemyLayer);
+                    if (!hit) continue;
+                    if (!_isAttacking) return hit;
+                    var enemy = hit.collider.gameObject;
+                    Destroy(enemy);
+                    return hit;
+                }
+                return false;
             }
         }
 
@@ -262,6 +271,51 @@ namespace TarodevController {
         }
 
         #endregion
+
+        #region Attack
+
+        [Header("ATTACK")]
+        [SerializeField] private float attackTime;
+        [SerializeField] private float attackSpeed;
+        [SerializeField] private bool enableAttack;
+        
+        private bool _isAttacking;
+        private float _attackDeltaTime;
+        private float _attackPassedTime;
+
+        private void CalculateAttack()
+        {
+            if (!enableAttack) return;
+            if (_attackDeltaTime >= attackTime)
+            {
+                _attackDeltaTime = 0;
+                _isAttacking = false;
+            }
+            if (UnityEngine.Input.GetMouseButtonDown(0))
+            {
+                _isAttacking = true;
+            }
+            
+            if (!_isAttacking) return;
+            
+            _attackDeltaTime += Time.deltaTime - _attackPassedTime;
+            var direction = Input is { X: 0, Y: 0 } ? 
+                new Vector2(playerVisual.transform.localScale.x, 0) 
+                : 
+                new Vector2(Input.X, Input.Y).normalized;
+            var velocity = direction * attackSpeed;
+            _currentHorizontalSpeed = velocity.x;
+            _currentVerticalSpeed = velocity.y / 2;
+            if ((!(_currentHorizontalSpeed > 0) || !_colRight)
+                && (!(_currentHorizontalSpeed < 0) || !_colLeft)
+                && (!(_currentVerticalSpeed > 0) || !_colUp)
+                && (!(_currentVerticalSpeed < 0) || !_colDown)) return;
+            // Don't walk through walls
+            _currentHorizontalSpeed = 0;
+            _currentVerticalSpeed = 0;
+        }
+        
+        #endregion
         
         #region Dash
 
@@ -280,6 +334,7 @@ namespace TarodevController {
         private void CalculateDash()
         {
             if (!enableDash) return;
+            if (_isAttacking) return;
             if (Grounded)
             {
                 _canDash = true;
@@ -290,7 +345,7 @@ namespace TarodevController {
                 _dashDeltaTime = 0;
                 _isDashing = false;
             }
-            if (UnityEngine.Input.GetKeyDown(KeyCode.X) && _canDash)
+            if (UnityEngine.Input.GetKeyDown(KeyCode.LeftShift) && _canDash)
             {
                 _isDashing = true;
                 _canControl = false;
@@ -302,18 +357,20 @@ namespace TarodevController {
             if (!_isDashing) return;
             
             _dashDeltaTime += Time.deltaTime - _passedTime;
-            var direction = Input is { X: 0, Y: 0 } ? new Vector2(playerVisual.transform.localScale.x, 0) : new Vector2(Input.X, Input.Y).normalized;
+            var direction = Input is { X: 0, Y: 0 } ? 
+                new Vector2(playerVisual.transform.localScale.x, 0) 
+                : 
+                new Vector2(Input.X, Input.Y).normalized;
             var velocity = direction * dashSpeed;
             _currentHorizontalSpeed = velocity.x;
-            _currentVerticalSpeed = velocity.y;
-            if (_currentHorizontalSpeed > 0 && _colRight 
-                || _currentHorizontalSpeed < 0 && _colLeft 
-                || _currentVerticalSpeed > 0 && _colUp
-                || _currentVerticalSpeed < 0 && _colDown) {
-                // Don't walk through walls
-                _currentHorizontalSpeed = 0;
-                _currentVerticalSpeed = 0;
-            }
+            _currentVerticalSpeed = velocity.y / 2;
+            if ((!(_currentHorizontalSpeed > 0) || !_colRight)
+                && (!(_currentHorizontalSpeed < 0) || !_colLeft)
+                && (!(_currentVerticalSpeed > 0) || !_colUp)
+                && (!(_currentVerticalSpeed < 0) || !_colDown)) return;
+            // Don't walk through walls
+            _currentHorizontalSpeed = 0;
+            _currentVerticalSpeed = 0;
         }
 
         #endregion
@@ -412,7 +469,7 @@ namespace TarodevController {
         private void BounceBullet()
         {
             if (!bounceEnabled) return;
-            if (!UnityEngine.Input.GetKeyDown(KeyCode.F)) return;
+            if (!UnityEngine.Input.GetMouseButton(0)) return;
             var bullet = Physics2D.OverlapBox(transform.position + new Vector3(overlapBoxOffSetX, overlapBoxOffSetY, 0), new Vector2(overlapBoxSizeX, overlapBoxSizeY), 0, _bulletLayer);
             if (!bullet) return;
             var bulletController = bullet.GetComponent<Bullet>();
@@ -438,7 +495,7 @@ namespace TarodevController {
         private float _lastJumpPressed;
         private bool CanUseCoyote => _coyoteUsable && !_colDown && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
         private bool HasBufferedJump => _colDown && _lastJumpPressed + _jumpBuffer > Time.time;
-        private bool HasDoubleJump => !_colDown && _currentJumpedTimes is >= 1 and <= 2 && enableDoubleJump;
+        private bool HasDoubleJump => _currentJumpedTimes is >= 1 and < 2 && enableDoubleJump;
 
         private void CalculateJumpApex() {
             if (!_colDown) {
@@ -472,7 +529,7 @@ namespace TarodevController {
                 _currentJumpedTimes++;
             }
 
-            if (_colDown) _currentJumpedTimes = 0;
+            if (Grounded) _currentJumpedTimes = 0;
 
             if (_colUp) {
                 if (_currentVerticalSpeed > 0) _currentVerticalSpeed = 0;
