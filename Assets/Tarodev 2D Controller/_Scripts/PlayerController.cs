@@ -147,7 +147,11 @@ namespace TarodevController {
                 {
                     var hit = Physics2D.Raycast(point, range.Dir, _detectionRayLength, _enemyLayer);
                     if (!hit) continue;
-                    if (!_isAttacking) return hit;
+                    if (!_isAttacking)
+                    {
+                        _dead = true;
+                        return hit;
+                    }
                     var enemy = hit.collider.gameObject;
                     Destroy(enemy);
                     return hit;
