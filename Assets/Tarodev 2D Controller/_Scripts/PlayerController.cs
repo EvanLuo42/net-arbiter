@@ -169,11 +169,6 @@ namespace TarodevController {
             _colDanmaku = RunDetection(_raysUp) || RunDetection(_raysLeft) || RunDetection(_raysRight);
 
             if (_colDanmakuGround) _colDanmaku = false;
-
-            if (_colDanmaku)
-            {
-                _dead = true;
-            }
             
             bool RunDetection(RayRange range) {
                 foreach (var point in EvaluateRayPositions(range))
@@ -183,7 +178,10 @@ namespace TarodevController {
                     var danmaku = hit.collider.gameObject;
                     var danmakuController = danmaku.GetComponent<Danmaku>();
                     danmakuController.destroy = true;
-                    HandleDanmakuEffects(danmakuController.danmakuTypes);
+                    if (range.Start != _raysDown.Start && range.Dir != _raysDown.Dir && range.End != _raysDown.End)
+                    {
+                        HandleDanmakuEffects(danmakuController.danmakuTypes);
+                    }
                     return hit;
                 }
                 return false;
