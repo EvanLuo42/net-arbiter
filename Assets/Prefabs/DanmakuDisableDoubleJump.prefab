@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -7521460073707186311}
   - component: {fileID: -3520151772845982858}
   m_Layer: 7
-  m_Name: Danmaku
+  m_Name: DanmakuDisableDoubleJump
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,4 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3088db9e703164851b4a33a36a5aae9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destory: 0
+  destroy: 0
+  direction: {x: 0, y: 0}
+  danmakuTypes: 01000000

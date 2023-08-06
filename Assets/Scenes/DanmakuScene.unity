@@ -579,7 +579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 923f9339cc5f74b55925013c14fb9abc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interval: 2
+  interval: 0.5
   lifetime: 2.8
   danmakuPrefab: {fileID: 6143504931264620225, guid: bd9bd3fc9543a4b0284aeefd9f8328ba, type: 3}
   danmakuSpeed: 5
@@ -912,6 +912,10 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
+      propertyPath: enableDash
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: _jumpBuffer
       value: 0.1
       objectReference: {fileID: 0}
@@ -934,6 +938,10 @@ PrefabInstance:
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: _deAcceleration
       value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
+      propertyPath: enableDoubleJump
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: _enemyLayer.m_Bits
@@ -977,7 +985,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: _characterBounds.m_Extent.y
-      value: 0.5
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773169, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: m_Name

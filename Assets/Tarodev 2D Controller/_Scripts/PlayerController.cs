@@ -19,7 +19,7 @@ namespace TarodevController {
         public bool JumpingThisFrame { get; private set; }
         public bool LandingThisFrame { get; private set; }
         public Vector3 RawMovement { get; private set; }
-        public bool Grounded => _colDown;
+        public bool Grounded => _colDown || _colDanmakuGround;
 
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
@@ -168,10 +168,7 @@ namespace TarodevController {
             
             _colDanmaku = RunDetection(_raysUp) || RunDetection(_raysLeft) || RunDetection(_raysRight);
 
-            if (_colDanmakuGround)
-            {
-                _colDanmaku = false;
-            }
+            if (_colDanmakuGround) _colDanmaku = false;
 
             if (_colDanmaku)
             {
@@ -184,7 +181,9 @@ namespace TarodevController {
                     var hit = Physics2D.Raycast(point, range.Dir, _detectionRayLength, _danmakuLayer);
                     if (!hit) continue;
                     var danmaku = hit.collider.gameObject;
-                    danmaku.GetComponent<Danmaku>().destroy = true;
+                    var danmakuController = danmaku.GetComponent<Danmaku>();
+                    danmakuController.destroy = true;
+                    HandleDanmakuEffects(danmakuController.danmakuTypes);
                     return hit;
                 }
                 return false;
@@ -267,12 +266,13 @@ namespace TarodevController {
         #endregion
         
         #region Dash
-        
+
         [Header("DASH")]
         [SerializeField] private float dashTime;
         [SerializeField] private float dashSpeed;
         [SerializeField] private float dashCooldown;
         [SerializeField] private float notMovableInterval;
+        [SerializeField] private bool enableDash;
         
         private bool _isDashing;
         private bool _canDash;
@@ -281,6 +281,7 @@ namespace TarodevController {
 
         private void CalculateDash()
         {
+            if (!enableDash) return;
             if (Grounded)
             {
                 _canDash = true;
@@ -378,6 +379,28 @@ namespace TarodevController {
 
         #endregion
 
+        #region Danmaku
+
+        private void HandleDanmakuEffects(List<Danmaku.DanmakuType> effects)
+        {
+            foreach (var effect in effects)
+            {
+                switch (effect)
+                {
+                    case Danmaku.DanmakuType.DisableDash:
+                        enableDash = false;
+                        break;
+                    case Danmaku.DanmakuType.DisableDoubleJump:
+                        enableDoubleJump = false;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+        #endregion
+
         #region Bounce
 
         [Header("BOUNCE")] [SerializeField] private bool bounceEnabled;
@@ -409,6 +432,7 @@ namespace TarodevController {
         [SerializeField] private float _coyoteTimeThreshold = 0.1f;
         [SerializeField] private float _jumpBuffer = 0.1f;
         [SerializeField] private float _jumpEndEarlyGravityModifier = 3;
+        [SerializeField] private bool enableDoubleJump;
         private int _currentJumpedTimes;
         private bool _coyoteUsable;
         private bool _endedJumpEarly = true;
@@ -416,7 +440,7 @@ namespace TarodevController {
         private float _lastJumpPressed;
         private bool CanUseCoyote => _coyoteUsable && !_colDown && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
         private bool HasBufferedJump => _colDown && _lastJumpPressed + _jumpBuffer > Time.time;
-        private bool HasDoubleJump => !_colDown && _currentJumpedTimes == 1;
+        private bool HasDoubleJump => !_colDown && _currentJumpedTimes is >= 1 and <= 2 && enableDoubleJump;
 
         private void CalculateJumpApex() {
             if (!_colDown) {
