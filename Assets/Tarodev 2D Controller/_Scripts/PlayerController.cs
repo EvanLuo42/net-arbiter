@@ -278,10 +278,12 @@ namespace TarodevController {
         [SerializeField] private float attackTime;
         [SerializeField] private float attackSpeed;
         [SerializeField] private bool enableAttack;
+        [SerializeField] private float attackCooldown;
         
         private bool _isAttacking;
         private float _attackDeltaTime;
         private float _attackPassedTime;
+        private float _cooldownDeltaTime;
 
         private void CalculateAttack()
         {
@@ -291,13 +293,18 @@ namespace TarodevController {
                 _attackDeltaTime = 0;
                 _isAttacking = false;
             }
-            if (UnityEngine.Input.GetMouseButtonDown(0))
+            if (UnityEngine.Input.GetMouseButtonDown(0) && _cooldownDeltaTime >= attackCooldown)
             {
                 _isAttacking = true;
+                _cooldownDeltaTime = 0;
             }
-            
-            if (!_isAttacking) return;
-            
+
+            if (!_isAttacking)
+            {
+                _cooldownDeltaTime += Time.deltaTime - _attackPassedTime;
+                return;
+            }
+
             _attackDeltaTime += Time.deltaTime - _attackPassedTime;
             var direction = Input is { X: 0, Y: 0 } ? 
                 new Vector2(playerVisual.transform.localScale.x, 0) 
