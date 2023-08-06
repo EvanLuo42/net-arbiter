@@ -6,11 +6,11 @@ public class SceneTransitionController : MonoBehaviour
 {
     // 正在加载场景名称
     private string _nextScene = "";
-    private Animator animator;
+    private Animator _animator;
 
     private void Start()
     {
-        animator = gameObject.GetComponentInChildren<Animator>();
+        _animator = gameObject.GetComponent<Animator>();
     }
 
     // 从淡出动画结束时触发
@@ -23,6 +23,6 @@ public class SceneTransitionController : MonoBehaviour
     public void SetTransition(string nextScene)
     {
         _nextScene = nextScene;
-        animator.SetTrigger("FadeOut");
+        _animator.SetTrigger("FadeOut");
     }
 }

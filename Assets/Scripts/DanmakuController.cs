@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Timers;
 using UnityEngine;
 
 public class DanmakuController : MonoBehaviour
@@ -26,14 +25,13 @@ public class DanmakuController : MonoBehaviour
                 continue;
             }
             Vector3 velocity = _danmakus[time].Item2.direction * danmakuSpeed;
-            _danmakus[time].Item2.transform.position += velocity * Time.deltaTime; 
+            _danmakus[time].Item1.transform.position += velocity * Time.deltaTime;
         }
 
         if (!(_passedTime - _lastShootTime > interval)) return;
         
-        var newDanmaku = Instantiate(danmakuPrefab, transform, true);
+        var newDanmaku = Instantiate(danmakuPrefab, transform.position, Quaternion.identity, transform);
         var newDanmakuController = newDanmaku.GetComponent<Danmaku>();
-        newDanmakuController.transform.position = transform.position;
         newDanmakuController.direction = Vector2.left;
         _danmakus.Add(_passedTime, new Tuple<GameObject, Danmaku>(newDanmaku, newDanmakuController));
         _lastShootTime = _passedTime;

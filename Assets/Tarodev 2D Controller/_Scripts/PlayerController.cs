@@ -49,8 +49,8 @@ namespace TarodevController {
 
             GatherInput();
             CalculateRayRanged();
-            RunDanmakuCollisionChecks();
             RunEnvironmentCollisionChecks();
+            RunDanmakuCollisionChecks();
             RunBulletCollisionChecks();
             RunEnemyCollisionChecks();
             
@@ -168,9 +168,15 @@ namespace TarodevController {
             
             _colDanmaku = RunDetection(_raysUp) || RunDetection(_raysLeft) || RunDetection(_raysRight);
 
-            if (_colDanmakuGround) _colDanmaku = false;
+            if (_colDanmakuGround)
+            {
+                _colDanmaku = false;
+            }
 
-            if (_colDanmaku) _dead = true;
+            if (_colDanmaku)
+            {
+                _dead = true;
+            }
             
             bool RunDetection(RayRange range) {
                 foreach (var point in EvaluateRayPositions(range))
@@ -189,7 +195,10 @@ namespace TarodevController {
         {
             if (!bounceEnabled) return;
             _colBullet = RunDetection(_raysUp) || RunDetection(_raysLeft) || RunDetection(_raysRight) || RunDetection(_raysDown);
-            if (_colBullet) _dead = true;
+            if (_colBullet)
+            {
+                _dead = true;
+            }
             
             bool RunDetection(RayRange range) {
                 foreach (var point in EvaluateRayPositions(range))
@@ -298,9 +307,13 @@ namespace TarodevController {
             var velocity = direction * dashSpeed;
             _currentHorizontalSpeed = velocity.x;
             _currentVerticalSpeed = velocity.y;
-            if (_currentHorizontalSpeed > 0 && _colRight || _currentHorizontalSpeed < 0 && _colLeft || _currentVerticalSpeed > 0 && _colUp) {
+            if (_currentHorizontalSpeed > 0 && _colRight 
+                || _currentHorizontalSpeed < 0 && _colLeft 
+                || _currentVerticalSpeed > 0 && _colUp
+                || _currentVerticalSpeed < 0 && _colDown) {
                 // Don't walk through walls
                 _currentHorizontalSpeed = 0;
+                _currentVerticalSpeed = 0;
             }
         }
 
@@ -396,7 +409,6 @@ namespace TarodevController {
         [SerializeField] private float _coyoteTimeThreshold = 0.1f;
         [SerializeField] private float _jumpBuffer = 0.1f;
         [SerializeField] private float _jumpEndEarlyGravityModifier = 3;
-        [SerializeField] private int maxJumpTimes = 1;
         private int _currentJumpedTimes;
         private bool _coyoteUsable;
         private bool _endedJumpEarly = true;
@@ -404,7 +416,7 @@ namespace TarodevController {
         private float _lastJumpPressed;
         private bool CanUseCoyote => _coyoteUsable && !_colDown && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
         private bool HasBufferedJump => _colDown && _lastJumpPressed + _jumpBuffer > Time.time;
-        private bool HasDoubleJump => !_colDown && _currentJumpedTimes <= maxJumpTimes - 1;
+        private bool HasDoubleJump => !_colDown && _currentJumpedTimes == 1;
 
         private void CalculateJumpApex() {
             if (!_colDown) {
@@ -435,12 +447,10 @@ namespace TarodevController {
             if (!_colDown && Input.JumpUp && !_endedJumpEarly && Velocity.y > 0) {
                 // _currentVerticalSpeed = 0;
                 _endedJumpEarly = true;
+                _currentJumpedTimes++;
             }
 
-            if (_colDown || _colDanmaku)
-            {
-                _currentJumpedTimes = 0;
-            }
+            if (_colDown) _currentJumpedTimes = 0;
 
             if (_colUp) {
                 if (_currentVerticalSpeed > 0) _currentVerticalSpeed = 0;
