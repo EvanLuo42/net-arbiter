@@ -2545,6 +2545,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6184186196158557252, guid: 8708f27ab8a3f4842af9c12aa2ea4520, type: 3}
   m_PrefabInstance: {fileID: 725216338}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &725216344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725216339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38840a3f7bce7406b89e2a75670484ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &797919519 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7631807814118882576, guid: eec6b3d0abdb343da990ba3e5124c87d, type: 3}
@@ -2645,6 +2657,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &965078698 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5124300410236407460, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
+  m_PrefabInstance: {fileID: 2034013620}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1083377484 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6432609860406773169, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
+  m_PrefabInstance: {fileID: 2034013620}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1210391848
 GameObject:
   m_ObjectHideFlags: 0
@@ -3377,6 +3399,7 @@ MonoBehaviour:
   lifetime: 5
   destroyableTime: 2
   bulletPrefab: {fileID: 1615789642748547853, guid: 1351bb037d2fb4053a965dd74a406a43, type: 3}
+  player: {fileID: 1083377484}
   bulletSpeed: 5
 --- !u!1 &1947994568
 GameObject:
@@ -3431,12 +3454,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
+      propertyPath: dashTime
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
+      propertyPath: dashSpeed
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
+      propertyPath: playerVisual
+      value: 
+      objectReference: {fileID: 965078698}
+    - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: bounceEnabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
+      propertyPath: enableDanmaku
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: overlapBoxSizeX
-      value: 3.83
+      value: 5.45
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: overlapBoxSizeY
@@ -3453,6 +3492,10 @@ PrefabInstance:
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: bulletLayer.m_Bits
       value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
+      propertyPath: notMovableInterval
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: _bulletLayer.m_Bits

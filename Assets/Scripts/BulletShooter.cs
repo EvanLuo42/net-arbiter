@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
 public class BulletShooter : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class BulletShooter : MonoBehaviour
     public float lifetime;
     public float destroyableTime;
     public GameObject bulletPrefab;
+    public GameObject player;
     public float bulletSpeed;
     public readonly Dictionary<float, Tuple<GameObject, Bullet>> Bullets = new();
     private float _passedTime;
@@ -45,11 +47,11 @@ public class BulletShooter : MonoBehaviour
         }
 
         if (!(_passedTime - _lastShootTime > interval)) return;
-        
-        var newBullet = Instantiate(bulletPrefab, transform, true);
-        newBullet.transform.position = transform.position;
+
+        var position = transform.position;
+        var newBullet = Instantiate(bulletPrefab, position, Quaternion.identity, transform);
         var newBulletController = newBullet.GetComponent<Bullet>();
-        newBulletController.direction = Vector2.left;
+        newBulletController.direction = Quaternion.AngleAxis(new Random().Next(0, 60), Vector3.up) * (player.transform.position - position).normalized;
         Bullets.Add(_passedTime, new Tuple<GameObject, Bullet>(newBullet, newBulletController));
         _lastShootTime = _passedTime;
     }
