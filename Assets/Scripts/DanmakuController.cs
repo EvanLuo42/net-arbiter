@@ -33,6 +33,7 @@ public class DanmakuController : MonoBehaviour
         
         var newDanmaku = Instantiate(danmakuPrefab, transform, true);
         var newDanmakuController = newDanmaku.GetComponent<Danmaku>();
+        newDanmakuController.transform.position = transform.position;
         newDanmakuController.direction = Vector2.left;
         _danmakus.Add(_passedTime, new Tuple<GameObject, Danmaku>(newDanmaku, newDanmakuController));
         _lastShootTime = _passedTime;

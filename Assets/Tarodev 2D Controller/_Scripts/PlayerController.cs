@@ -52,6 +52,7 @@ namespace TarodevController {
             RunDanmakuCollisionChecks();
             RunEnvironmentCollisionChecks();
             RunBulletCollisionChecks();
+            RunEnemyCollisionChecks();
             
             BounceBullet();
             
@@ -65,6 +66,8 @@ namespace TarodevController {
 
             // OnDrawGizmos();
             MoveCharacter(); // Actually perform the axis movement
+            
+            if (transform.position.y < -50) sceneTransitionAnimator.GetComponent<SceneTransitionController>().SetTransition(SceneManager.GetActiveScene().name);
         }
 
 
@@ -91,6 +94,7 @@ namespace TarodevController {
         [SerializeField] private LayerMask _groundLayer;
         [SerializeField] private LayerMask _danmakuLayer;
         [SerializeField] private LayerMask _bulletLayer;
+        [SerializeField] private LayerMask _enemyLayer;
         [SerializeField] private int _detectorCount = 3;
         [SerializeField] private float _detectionRayLength = 0.1f;
         [SerializeField] [Range(0.1f, 0.3f)] private float _rayBuffer = 0.1f; // Prevents side detectors hitting the ground
@@ -99,6 +103,7 @@ namespace TarodevController {
         private bool _colUp, _colRight, _colDown, _colLeft;
         private bool _colDanmaku, _colDanmakuGround;
         private bool _colBullet;
+        private bool _colEnemy;
 
         private float _timeLeftGrounded;
 
@@ -129,6 +134,18 @@ namespace TarodevController {
                 return EvaluateRayPositions(range).Any(point => Physics2D.Raycast(point, range.Dir, _detectionRayLength, _groundLayer));
             }
         }
+        
+        private void RunEnemyCollisionChecks()
+        {
+            _colEnemy = RunDetection(_raysUp) || RunDetection(_raysLeft) || RunDetection(_raysRight) ||
+                        RunDetection(_raysDown);
+
+            if (_colEnemy) _dead = true;
+
+            bool RunDetection(RayRange range) {
+                return EvaluateRayPositions(range).Any(point => Physics2D.Raycast(point, range.Dir, _detectionRayLength, _enemyLayer));
+            }
+        }
 
         private void RunDanmakuCollisionChecks()
         {
@@ -152,7 +169,8 @@ namespace TarodevController {
             _colDanmaku = RunDetection(_raysUp) || RunDetection(_raysLeft) || RunDetection(_raysRight);
 
             if (_colDanmakuGround) _colDanmaku = false;
-            
+
+            if (_colDanmaku) _dead = true;
             
             bool RunDetection(RayRange range) {
                 foreach (var point in EvaluateRayPositions(range))
@@ -170,7 +188,8 @@ namespace TarodevController {
         private void RunBulletCollisionChecks()
         {
             if (!bounceEnabled) return;
-            _colDanmaku = RunDetection(_raysUp) || RunDetection(_raysLeft) || RunDetection(_raysRight) || RunDetection(_raysDown);
+            _colBullet = RunDetection(_raysUp) || RunDetection(_raysLeft) || RunDetection(_raysRight) || RunDetection(_raysDown);
+            if (_colBullet) _dead = true;
             
             bool RunDetection(RayRange range) {
                 foreach (var point in EvaluateRayPositions(range))
@@ -183,9 +202,12 @@ namespace TarodevController {
             }
         }
 
+        private bool _dead;
+        
         private void DeathChecks()
         {
-            if (!_colDanmaku && !_colBullet) return;
+            if (!_dead) return;
+            _dead = false;
             sceneTransitionAnimator
                 .GetComponent<SceneTransitionController>()
                 .SetTransition(SceneManager.GetActiveScene().name);
@@ -272,7 +294,7 @@ namespace TarodevController {
             if (!_isDashing) return;
             
             _dashDeltaTime += Time.deltaTime - _passedTime;
-            var direction = Input is { X: 0, Y: 0 } ? new Vector2(playerVisual.transform.localScale.x, 0) : new Vector2(Input.X, Input.Y);
+            var direction = Input is { X: 0, Y: 0 } ? new Vector2(playerVisual.transform.localScale.x, 0) : new Vector2(Input.X, Input.Y).normalized;
             var velocity = direction * dashSpeed;
             _currentHorizontalSpeed = velocity.x;
             _currentVerticalSpeed = velocity.y;
@@ -398,7 +420,6 @@ namespace TarodevController {
         private void CalculateJump() {
             // Jump if: grounded or within coyote threshold || sufficient jump buffer
             if (Input.JumpDown && CanUseCoyote || HasBufferedJump || _colDanmakuGround || Input.JumpDown && HasDoubleJump) {
-                Debug.Log(HasDoubleJump);
                 _currentVerticalSpeed = _jumpHeight;
                 _endedJumpEarly = false;
                 _coyoteUsable = false;
