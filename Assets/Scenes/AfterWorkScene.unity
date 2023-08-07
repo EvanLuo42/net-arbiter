@@ -704,6 +704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fffbf6a764fcd4f61b7c5749729889a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interval: 0.1
   jsonAsset: {fileID: 4900000, guid: 325264dbe109e4332aa1e6703c3a63fc, type: 3}
   speakerName: {fileID: 2036188408}
   speakerWords: {fileID: 90798704}
@@ -782,7 +783,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 17.16, y: -121.19}
+  m_AnchoredPosition: {x: 17.160004, y: -121.19}
   m_SizeDelta: {x: -158.47, y: -262.58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1680610378

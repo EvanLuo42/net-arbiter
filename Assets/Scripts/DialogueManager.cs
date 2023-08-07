@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using Ink.Runtime;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
+    [SerializeField] private float interval;
     [Header("Json")] 
     [SerializeField] private TextAsset jsonAsset;
 
@@ -21,6 +23,9 @@ public class DialogueManager : MonoBehaviour
     private Story _story;
     private bool _choosingInterval;
     private bool _isChoosing;
+    private Coroutine _displayLineCoroutine;
+    private float _passedTime;
+    private float _displayDeltaTime;
 
     private void SetChildrenActive(GameObject gameObject, bool active)
     {
@@ -41,6 +46,15 @@ public class DialogueManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _displayDeltaTime += Time.time - _passedTime;
+        _passedTime = Time.time;
+        
+        if (_displayDeltaTime > interval)
+        {
+            speakerWords.maxVisibleCharacters++;
+            _displayDeltaTime = 0;
+        }
+
         if (!Input.GetButtonDown("Submit")) return;
 
         if (_isChoosing) return;
@@ -51,6 +65,7 @@ public class DialogueManager : MonoBehaviour
             _story.Continue();
             speakerName.text = "ABC";
             speakerWords.text = _story.currentText;
+            speakerWords.maxVisibleCharacters = 0;
             if (_story.currentChoices.Count == 0) return;
             PaintButtons();
 
