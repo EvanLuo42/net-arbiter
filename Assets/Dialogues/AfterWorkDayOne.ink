@@ -12,10 +12,18 @@ asdf
 
 OK
 
+ABC
+
+djfkj
+
 -> DONE
 
 === ChoiceB ===
 
 NO
+
+ABC
+
+djfkj
 
 -> DONE

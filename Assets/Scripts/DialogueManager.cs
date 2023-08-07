@@ -43,6 +43,8 @@ public class DialogueManager : MonoBehaviour
     {
         if (!Input.GetButtonDown("Submit")) return;
 
+        if (_isChoosing) return;
+
         if (_story.canContinue)
         {
             SetChildrenActive(gameObject, true);
@@ -82,10 +84,12 @@ public class DialogueManager : MonoBehaviour
                 _story.Continue();
                 speakerName.text = "ABC";
                 speakerWords.text = _story.currentText;
+                _isChoosing = false;
                 ClearAllChoices();
             });
             choices.Add(choice);
             index++;
         }
+        _isChoosing = true;
     }
 }
