@@ -505,7 +505,7 @@ namespace TarodevController {
 
         #endregion
 
-        #region
+        #region Jump
 
         [Header("JUMPING")] [SerializeField] private float _jumpHeight = 30;
         [SerializeField] private float _jumpApexThreshold = 10f;
@@ -518,6 +518,9 @@ namespace TarodevController {
         private float _lastJumpPressed;
         private bool CanUseCoyote => _coyoteUsable && !_colDown && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
         private bool HasBufferedJump => _colDown && _lastJumpPressed + _jumpBuffer > Time.time;
+        private bool HasDoubleJump => !Grounded && _currentJumpedTime == 1;
+
+        private int _currentJumpedTime;
 
         private void CalculateJumpApex() {
             if (!_colDown) {
@@ -531,13 +534,16 @@ namespace TarodevController {
         }
 
         private void CalculateJump() {
+            if (!Input.JumpDown && Grounded) _currentJumpedTime = 0;
+            
             // Jump if: grounded or within coyote threshold || sufficient jump buffer
-            if (Input.JumpDown && CanUseCoyote || HasBufferedJump || _colDanmakuGround) {
+            if (Input.JumpDown && CanUseCoyote || HasBufferedJump || _colDanmakuGround || Input.JumpDown && HasDoubleJump) {
                 _currentVerticalSpeed = _jumpHeight;
                 _endedJumpEarly = false;
                 _coyoteUsable = false;
                 _timeLeftGrounded = float.MinValue;
                 JumpingThisFrame = true;
+                _currentJumpedTime++;
             }
             else {
                 JumpingThisFrame = false;
