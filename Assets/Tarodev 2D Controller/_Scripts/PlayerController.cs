@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 namespace TarodevController {
     /// <summary>
@@ -53,7 +54,8 @@ namespace TarodevController {
             RunEnvironmentCollisionChecks();
             RunDanmakuCollisionChecks();
             RunBulletCollisionChecks();
-            RunEnemyCollisionChecks();
+            RunLivingEnemyCollisionChecks();
+            RunNonLivingEnemyCollisionChecks();
             
             BounceBullet();
             
@@ -96,7 +98,8 @@ namespace TarodevController {
         [SerializeField] private LayerMask _groundLayer;
         [SerializeField] private LayerMask _danmakuLayer;
         [SerializeField] private LayerMask _bulletLayer;
-        [SerializeField] private LayerMask _enemyLayer;
+        [SerializeField] private LayerMask _livingEnemyLayer;
+        [SerializeField] private LayerMask _nonLivingEnemyLayer;
         [SerializeField] private int _detectorCount = 3;
         [SerializeField] private float _detectionRayLength = 0.1f;
         [SerializeField] [Range(0.1f, 0.3f)] private float _rayBuffer = 0.1f; // Prevents side detectors hitting the ground
@@ -105,7 +108,8 @@ namespace TarodevController {
         private bool _colUp, _colRight, _colDown, _colLeft;
         private bool _colDanmaku, _colDanmakuGround;
         private bool _colBullet;
-        private bool _colEnemy;
+        private bool _colLivingEnemy;
+        private bool _colNonLivingEnemy;
 
         private float _timeLeftGrounded;
 
@@ -137,15 +141,28 @@ namespace TarodevController {
             }
         }
         
-        private void RunEnemyCollisionChecks()
+        private void RunNonLivingEnemyCollisionChecks() {
+
+            // The rest
+            _colNonLivingEnemy = RunDetection(_raysUp) || RunDetection(_raysDown) || RunDetection(_raysLeft) ||
+                              RunDetection(_raysRight);
+
+            if (_colNonLivingEnemy) _dead = true;
+
+            bool RunDetection(RayRange range) {
+                return EvaluateRayPositions(range).Any(point => Physics2D.Raycast(point, range.Dir, _detectionRayLength, _nonLivingEnemyLayer));
+            }
+        }
+        
+        private void RunLivingEnemyCollisionChecks()
         {
-            _colEnemy = RunDetection(_raysUp) || RunDetection(_raysLeft) || RunDetection(_raysRight) ||
+            _colLivingEnemy = RunDetection(_raysUp) || RunDetection(_raysLeft) || RunDetection(_raysRight) ||
                         RunDetection(_raysDown);
 
             bool RunDetection(RayRange range) {
                 foreach (var point in EvaluateRayPositions(range))
                 {
-                    var hit = Physics2D.Raycast(point, range.Dir, _detectionRayLength, _enemyLayer);
+                    var hit = Physics2D.Raycast(point, range.Dir, _detectionRayLength, _livingEnemyLayer);
                     if (!hit) continue;
                     if (!_isAttacking)
                     {
@@ -297,7 +314,7 @@ namespace TarodevController {
                 _attackDeltaTime = 0;
                 _isAttacking = false;
             }
-            if (UnityEngine.Input.GetMouseButtonDown(0) && _cooldownDeltaTime >= attackCooldown)
+            if (UnityEngine.Input.GetKeyDown(KeyCode.F) && _cooldownDeltaTime >= attackCooldown)
             {
                 _isAttacking = true;
                 _cooldownDeltaTime = 0;
