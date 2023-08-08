@@ -16,8 +16,8 @@ TagManager:
   - Backgound
   - Danmaku
   - Bullet
-  - Enemy
-  - 
+  - NonLivingEnemy
+  - LivingEnemy
   - 
   - 
   - 
