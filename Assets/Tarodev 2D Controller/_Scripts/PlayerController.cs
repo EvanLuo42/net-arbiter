@@ -473,9 +473,6 @@ namespace TarodevController {
                     case Danmaku.DanmakuType.DisableDash:
                         enableDash = false;
                         break;
-                    case Danmaku.DanmakuType.DisableDoubleJump:
-                        enableDoubleJump = false;
-                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -508,22 +505,22 @@ namespace TarodevController {
 
         #endregion
 
-        #region
+        #region Jump
 
         [Header("JUMPING")] [SerializeField] private float _jumpHeight = 30;
         [SerializeField] private float _jumpApexThreshold = 10f;
         [SerializeField] private float _coyoteTimeThreshold = 0.1f;
         [SerializeField] private float _jumpBuffer = 0.1f;
         [SerializeField] private float _jumpEndEarlyGravityModifier = 3;
-        [SerializeField] private bool enableDoubleJump;
-        private int _currentJumpedTimes;
         private bool _coyoteUsable;
         private bool _endedJumpEarly = true;
         private float _apexPoint; // Becomes 1 at the apex of a jump
         private float _lastJumpPressed;
         private bool CanUseCoyote => _coyoteUsable && !_colDown && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
         private bool HasBufferedJump => _colDown && _lastJumpPressed + _jumpBuffer > Time.time;
-        private bool HasDoubleJump => _currentJumpedTimes is >= 1 and < 2 && enableDoubleJump;
+        private bool HasDoubleJump => !Grounded && _currentJumpedTime == 1;
+
+        private int _currentJumpedTime;
 
         private void CalculateJumpApex() {
             if (!_colDown) {
@@ -537,6 +534,8 @@ namespace TarodevController {
         }
 
         private void CalculateJump() {
+            if (!Input.JumpDown && Grounded) _currentJumpedTime = 0;
+            
             // Jump if: grounded or within coyote threshold || sufficient jump buffer
             if (Input.JumpDown && CanUseCoyote || HasBufferedJump || _colDanmakuGround || Input.JumpDown && HasDoubleJump) {
                 _currentVerticalSpeed = _jumpHeight;
@@ -544,7 +543,7 @@ namespace TarodevController {
                 _coyoteUsable = false;
                 _timeLeftGrounded = float.MinValue;
                 JumpingThisFrame = true;
-                _currentJumpedTimes++;
+                _currentJumpedTime++;
             }
             else {
                 JumpingThisFrame = false;
@@ -554,10 +553,7 @@ namespace TarodevController {
             if (!_colDown && Input.JumpUp && !_endedJumpEarly && Velocity.y > 0) {
                 // _currentVerticalSpeed = 0;
                 _endedJumpEarly = true;
-                _currentJumpedTimes++;
             }
-
-            if (Grounded) _currentJumpedTimes = 0;
 
             if (_colUp) {
                 if (_currentVerticalSpeed > 0) _currentVerticalSpeed = 0;

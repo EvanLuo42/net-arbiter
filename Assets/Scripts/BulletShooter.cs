@@ -51,7 +51,7 @@ public class BulletShooter : MonoBehaviour
         var position = transform.position;
         var newBullet = Instantiate(bulletPrefab, position, Quaternion.identity, transform);
         var newBulletController = newBullet.GetComponent<Bullet>();
-        newBulletController.direction = Quaternion.AngleAxis(new Random().Next(0, 80), Vector3.up) * (player.transform.position - position).normalized;
+        newBulletController.direction = (Quaternion.AngleAxis(new Random().Next(-80, 80), Vector3.up) * (player.transform.position - position).normalized).normalized;
         Bullets.Add(_passedTime, new Tuple<GameObject, Bullet>(newBullet, newBulletController));
         _lastShootTime = _passedTime;
     }

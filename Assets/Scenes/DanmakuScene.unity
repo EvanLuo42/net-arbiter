@@ -465,6 +465,7 @@ MonoBehaviour:
   lifetime: 3.5
   danmakuPrefab: {fileID: 6143504931264620225, guid: bd9bd3fc9543a4b0284aeefd9f8328ba, type: 3}
   danmakuSpeed: 4
+  direction: {x: -1, y: 0}
 --- !u!4 &459932529
 Transform:
   m_ObjectHideFlags: 0
@@ -518,6 +519,7 @@ MonoBehaviour:
   lifetime: 2.8
   danmakuPrefab: {fileID: 6143504931264620225, guid: bd9bd3fc9543a4b0284aeefd9f8328ba, type: 3}
   danmakuSpeed: 13
+  direction: {x: -1, y: 0}
 --- !u!4 &504126073
 Transform:
   m_ObjectHideFlags: 0
@@ -650,6 +652,7 @@ MonoBehaviour:
   lifetime: 2.8
   danmakuPrefab: {fileID: 6143504931264620225, guid: bd9bd3fc9543a4b0284aeefd9f8328ba, type: 3}
   danmakuSpeed: 5
+  direction: {x: -1, y: 0}
 --- !u!4 &930866819
 Transform:
   m_ObjectHideFlags: 0
@@ -1007,7 +1010,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: _jumpHeight
-      value: 22
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: attackSpeed
@@ -1142,6 +1145,10 @@ PrefabInstance:
       value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6432609861764478826, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 87
+      objectReference: {fileID: 0}
+    - target: {fileID: 6432609861764478826, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: m_SortingLayerID
       value: 533451395
       objectReference: {fileID: 0}
@@ -1183,6 +1190,7 @@ MonoBehaviour:
   lifetime: 8
   danmakuPrefab: {fileID: 6143504931264620225, guid: bd9bd3fc9543a4b0284aeefd9f8328ba, type: 3}
   danmakuSpeed: 5
+  direction: {x: -1, y: 0}
 --- !u!4 &1974055612
 Transform:
   m_ObjectHideFlags: 0
