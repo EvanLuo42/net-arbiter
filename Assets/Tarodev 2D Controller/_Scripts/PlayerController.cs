@@ -441,6 +441,7 @@ namespace TarodevController
                 {
                     _consumeDashToWall = false;
                     _dashToWallCurrentIteration = 0;
+                    _canControl = true;
                 }
             }
 
@@ -453,6 +454,8 @@ namespace TarodevController
                 new Vector2(playerVisual.transform.localScale.x, 0)
                 :
                 new Vector2(Input.X, Input.Y).normalized;
+            if (_consumeDashToWall) direction = 
+                    new Vector2(1, 0);
             var velocity = direction * dashSpeed;
             _currentHorizontalSpeed = velocity.x;
             _currentVerticalSpeed = velocity.y / 2;
