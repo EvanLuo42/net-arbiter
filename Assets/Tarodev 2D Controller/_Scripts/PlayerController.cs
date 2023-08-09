@@ -624,11 +624,11 @@ namespace TarodevController
         [SerializeField] private float _coyoteTimeThreshold = 0.1f;
         [SerializeField] private float _jumpBuffer = 0.1f;
         [SerializeField] private float _jumpEndEarlyGravityModifier = 3;
+        [SerializeField] private bool _doubleJumpEnabled;
         private bool _coyoteUsable;
         private bool _endedJumpEarly = true;
         private float _apexPoint; // Becomes 1 at the apex of a jump
         private float _lastJumpPressed;
-        private bool _doubleJumpEnabled;
         private bool CanUseCoyote => _coyoteUsable && !_colDown && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
         private bool HasBufferedJump => _colDown && _lastJumpPressed + _jumpBuffer > Time.time;
         private bool HasDoubleJump => !Grounded && _currentJumpedTime == 1;
