@@ -335,33 +335,7 @@ namespace TarodevController
         private bool _lastAttackLasting;
         private Vector3 _targetPosition;
         private Vector2 direction;
-
-        public int SoftMax(List<float> mike)
-        {
-            float lastEpoch = 0;
-            for (int c = 0; c < mike.Count; c++)
-            {
-                if (c == 0) lastEpoch = mike[c];
-                lastEpoch = mike[c] > lastEpoch ?
-                mike[c]
-                :
-                lastEpoch;
-            }
-            return mike.IndexOf(lastEpoch);
-        }
-        //public double Angle(Vector3 cen, Vector3 first, Vector3 second)
-        //{
-        //    double ma_x = first.x - cen.x;
-        //    double ma_y = first.y - cen.y;
-        //    double mb_x = second.x - cen.x;
-        //    double mb_y = second.y - cen.y;
-        //    double v1 = (ma_x * mb_x) + (ma_y * mb_y);
-        //    double ma_val = Math.Sqrt(ma_x * ma_x + ma_y * ma_y);
-        //    double mb_val = Math.Sqrt(mb_x * mb_x + mb_y * mb_y);
-        //    double cosM = v1 / (ma_val * mb_val);
-        //    double angleAMB = Math.Acos(cosM) * 180 / Mathf.PI;
-        //    return angleAMB;
-        //}
+        
         private void CalculateAttack()
         {
             if (!enableAttack) return;
@@ -373,8 +347,8 @@ namespace TarodevController
 
             if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0) && _cooldownDeltaTime >= attackCooldown)
             {
-
-                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, _livingEnemyLayer);
+                Collider2D[] colliders = {};
+                Physics2D.OverlapCircleNonAlloc(transform.position, radius, colliders, _livingEnemyLayer);
                 direction = colliders
                     .Select(x => x.transform)
                     .Where(x => Vector2.Angle(x.position - transform.position, _mainCamera.ScreenToWorldPoint(UnityEngine.Input.mousePosition)
@@ -388,27 +362,7 @@ namespace TarodevController
                     direction = new Vector2(0, 0);
                 }
                 _canControl = false;
-
-                //int num = 0;
-                //for (int i = 0;i < ObjectsTransforms.Count; i++)
-                //{
-                //    double angle = Vector2.Angle(ObjectsTransforms[i].position-transform.position,
-                //        _mainCamera.ScreenToWorldPoint(UnityEngine.Input.mousePosition)-transform.position);
-                //    Debug.Log(angle);
-                //    if (angle > angleBeared) continue;
-                //    Debug.Log(angle);
-                //    ObjectsTransforms[num] = colliders[i].transform;
-                //    num++;
-                //}
-                //if (ObjectsTransforms.Count == 0) return;
-                //List<float> distance = new List<float>();
-                //for(int i = 0;i<ObjectsTransforms.Count;i++)
-                //    distance.Add(Vector2.Distance(ObjectsTransforms[i].position, transform.position));
-                //Transform ObjectsTransform = ObjectsTransforms[SoftMax(distance)];
-                //_isAttacking = true;
-                //_cooldownDeltaTime = 0;
-                //_targetPosition = ObjectsTransform.position;
-                //direction = Math.Direction(_targetPosition - transform.position);
+                
                 _isAttacking = true;
                 _cooldownDeltaTime = 0;
                 playerVisual.transform.localScale = new Vector3(direction.x > 0 ? 1 : -1, 1, 1);
@@ -451,17 +405,21 @@ namespace TarodevController
         [SerializeField] private float dashCooldown;
         [SerializeField] private float notMovableInterval;
         [SerializeField] private bool enableDash;
+        [SerializeField] private int dashToWallIteration;
+        
 
         private bool _isDashing;
         private bool _canDash;
         private float _dashDeltaTime;
         private float _passedTime;
         private bool _consumeDashToWall;
+        private int _dashToWallCurrentIteration;
 
         private void CalculateDash()
         {
             if (!enableDash) return;
             if (_isAttacking) return;
+            
             if (Grounded)
             {
                 _canDash = true;
@@ -472,11 +430,18 @@ namespace TarodevController
                 _dashDeltaTime = 0;
                 _isDashing = false;
             }
+            
             if (UnityEngine.Input.GetKeyDown(KeyCode.LeftShift) && _canDash || _consumeDashToWall)
             {
                 _isDashing = true;
                 _canControl = false;
                 _canDash = false;
+                _dashToWallCurrentIteration++;
+                if (_dashToWallCurrentIteration >= dashToWallIteration)
+                {
+                    _consumeDashToWall = false;
+                    _dashToWallCurrentIteration = 0;
+                }
             }
 
             if (_dashDeltaTime >= notMovableInterval) _canControl = true;
