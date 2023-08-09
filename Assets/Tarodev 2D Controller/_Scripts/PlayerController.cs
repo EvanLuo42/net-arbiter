@@ -143,6 +143,11 @@ namespace TarodevController
             _colLeft = RunDetection(_raysLeft);
             _colRight = RunDetection(_raysRight);
 
+            if (_colLeft || _colRight || _colUp)
+            {
+                _consumeDashToWall = false;
+            }
+
             bool RunDetection(RayRange range)
             {
                 return EvaluateRayPositions(range).Any(point => Physics2D.Raycast(point, range.Dir, _detectionRayLength, _groundLayer));
@@ -343,7 +348,6 @@ namespace TarodevController
                 lastEpoch;
             }
             return mike.IndexOf(lastEpoch);
-            // 由于使用IndexOf，有可能有两个怪物的距离恰好一样，但只返回了第一个索引
         }
         //public double Angle(Vector3 cen, Vector3 first, Vector3 second)
         //{
@@ -452,6 +456,7 @@ namespace TarodevController
         private bool _canDash;
         private float _dashDeltaTime;
         private float _passedTime;
+        private bool _consumeDashToWall;
 
         private void CalculateDash()
         {
@@ -467,7 +472,7 @@ namespace TarodevController
                 _dashDeltaTime = 0;
                 _isDashing = false;
             }
-            if (UnityEngine.Input.GetKeyDown(KeyCode.LeftShift) && _canDash)
+            if (UnityEngine.Input.GetKeyDown(KeyCode.LeftShift) && _canDash || _consumeDashToWall)
             {
                 _isDashing = true;
                 _canControl = false;
@@ -574,6 +579,12 @@ namespace TarodevController
                     case Danmaku.DanmakuType.DisableDash:
                         enableDash = false;
                         break;
+                    case Danmaku.DanmakuType.DashUntilColWall:
+                        _consumeDashToWall = true;
+                        break;
+                    case Danmaku.DanmakuType.DisableDoubleJump:
+                        _doubleJumpEnabled = false;
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -617,6 +628,7 @@ namespace TarodevController
         private bool _endedJumpEarly = true;
         private float _apexPoint; // Becomes 1 at the apex of a jump
         private float _lastJumpPressed;
+        private bool _doubleJumpEnabled;
         private bool CanUseCoyote => _coyoteUsable && !_colDown && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
         private bool HasBufferedJump => _colDown && _lastJumpPressed + _jumpBuffer > Time.time;
         private bool HasDoubleJump => !Grounded && _currentJumpedTime == 1;
@@ -642,7 +654,7 @@ namespace TarodevController
             if (!Input.JumpDown && Grounded) _currentJumpedTime = 0;
 
             // Jump if: grounded or within coyote threshold || sufficient jump buffer
-            if (Input.JumpDown && CanUseCoyote || HasBufferedJump || _colDanmakuGround || Input.JumpDown && HasDoubleJump)
+            if (Input.JumpDown && CanUseCoyote || HasBufferedJump || _colDanmakuGround || Input.JumpDown && HasDoubleJump && _doubleJumpEnabled)
             {
                 _currentVerticalSpeed = _jumpHeight;
                 _endedJumpEarly = false;
