@@ -116,7 +116,7 @@ namespace TarodevController
         private bool _colBullet;
         private bool _colLivingEnemy;
         private bool _colNonLivingEnemy;
-
+        public bool _FinishPattern;
         private float _timeLeftGrounded;
 
         // We use these raycast checks for pre-collision information
@@ -135,7 +135,6 @@ namespace TarodevController
                     LandingThisFrame = true;
                     break;
             }
-
             _colDown = groundedCheck;
 
             // The rest
@@ -173,20 +172,22 @@ namespace TarodevController
         {
             _colLivingEnemy = RunDetection(_raysUp) || RunDetection(_raysLeft) || RunDetection(_raysRight) ||
                         RunDetection(_raysDown);
-
             bool RunDetection(RayRange range)
             {
                 foreach (var point in EvaluateRayPositions(range))
                 {
                     var hit = Physics2D.Raycast(point, range.Dir, _detectionRayLength, _livingEnemyLayer);
                     if (!hit) continue;
-                    if (!_isAttacking)
+                    Debug.Log(_FinishPattern);
+                    if (!_isAttacking || !_FinishPattern)
                     {
                         _dead = true;
                         return hit;
                     }
                     var enemy = hit.collider.gameObject;
-                    Destroy(enemy);
+                    Debug.Log(_FinishPattern);
+                    if (enemy.GetComponent<Enemy>() != null) enemy.GetComponent<Enemy>().death();
+                    _FinishPattern = false;
                     return hit;
                 }
                 return false;
@@ -335,7 +336,33 @@ namespace TarodevController
         private bool _lastAttackLasting;
         private Vector3 _targetPosition;
         private Vector2 direction;
-        
+        private float realStartTime;
+        public int SoftMax(List<float> mike)
+        {
+            float lastEpoch = 0;
+            for (int c = 0; c < mike.Count; c++)
+            {
+                if (c == 0) lastEpoch = mike[c];
+                lastEpoch = mike[c] > lastEpoch ?
+                mike[c]
+                :
+                lastEpoch;
+            }
+            return mike.IndexOf(lastEpoch);
+        }
+        //public double Angle(Vector3 cen, Vector3 first, Vector3 second)
+        //{
+        //    double ma_x = first.x - cen.x;
+        //    double ma_y = first.y - cen.y;
+        //    double mb_x = second.x - cen.x;
+        //    double mb_y = second.y - cen.y;
+        //    double v1 = (ma_x * mb_x) + (ma_y * mb_y);
+        //    double ma_val = Math.Sqrt(ma_x * ma_x + ma_y * ma_y);
+        //    double mb_val = Math.Sqrt(mb_x * mb_x + mb_y * mb_y);
+        //    double cosM = v1 / (ma_val * mb_val);
+        //    double angleAMB = Math.Acos(cosM) * 180 / Mathf.PI;
+        //    return angleAMB;
+        //}
         private void CalculateAttack()
         {
             if (!enableAttack) return;
@@ -343,12 +370,18 @@ namespace TarodevController
             {
                 _attackDeltaTime = 0;
                 _isAttacking = false;
+                Time.timeScale = 1;
             }
-
             if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0) && _cooldownDeltaTime >= attackCooldown)
             {
-                Collider2D[] colliders = {};
-                Physics2D.OverlapCircleNonAlloc(transform.position, radius, colliders, _livingEnemyLayer);
+                realStartTime = Time.realtimeSinceStartup;
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, _livingEnemyLayer);
+                Transform EnemyTarget = colliders.Select(x => x.transform)
+                    .Where(x => Vector2.Angle(x.position - transform.position, _mainCamera.ScreenToWorldPoint(UnityEngine.Input.mousePosition)
+                    - transform.position) < angleBeared)
+                    .OrderBy(x => Vector2.Distance(x.position, transform.position))
+                    .FirstOrDefault();
+                if(EnemyTarget != null)if (EnemyTarget.GetComponent<Enemy>() != null)EnemyTarget.GetComponent<Enemy>().InstantiatePattern();
                 direction = colliders
                     .Select(x => x.transform)
                     .Where(x => Vector2.Angle(x.position - transform.position, _mainCamera.ScreenToWorldPoint(UnityEngine.Input.mousePosition)
@@ -356,13 +389,33 @@ namespace TarodevController
                     .OrderBy(x => Vector2.Distance(x.position, transform.position))
                     .Select(x => Math.Direction(x.position - transform.position))
                     .FirstOrDefault();
-
                 if (direction == null)
                 {
-                    direction = new Vector2(0, 0);
+                    //direction = new Vector2(0, 0);
+                    return;
                 }
                 _canControl = false;
-                
+
+                //int num = 0;
+                //for (int i = 0;i < ObjectsTransforms.Count; i++)
+                //{
+                //    double angle = Vector2.Angle(ObjectsTransforms[i].position-transform.position,
+                //        _mainCamera.ScreenToWorldPoint(UnityEngine.Input.mousePosition)-transform.position);
+                //    Debug.Log(angle);
+                //    if (angle > angleBeared) continue;
+                //    Debug.Log(angle);
+                //    ObjectsTransforms[num] = colliders[i].transform;
+                //    num++;
+                //}
+                //if (ObjectsTransforms.Count == 0) return;
+                //List<float> distance = new List<float>();
+                //for(int i = 0;i<ObjectsTransforms.Count;i++)
+                //    distance.Add(Vector2.Distance(ObjectsTransforms[i].position, transform.position));
+                //Transform ObjectsTransform = ObjectsTransforms[SoftMax(distance)];
+                //_isAttacking = true;
+                //_cooldownDeltaTime = 0;
+                //_targetPosition = ObjectsTransform.position;
+                //direction = Math.Direction(_targetPosition - transform.position);
                 _isAttacking = true;
                 _cooldownDeltaTime = 0;
                 playerVisual.transform.localScale = new Vector3(direction.x > 0 ? 1 : -1, 1, 1);
@@ -373,25 +426,23 @@ namespace TarodevController
                 _canControl = true;
                 return;
             }
-
+            float realDeltatime = Time.realtimeSinceStartup - realStartTime;
             _attackDeltaTime += Time.deltaTime - _attackPassedTime;
             if (_mainCamera is null) return;
-
-            if (direction != Vector2.zero)
-            {
-                var velocity = direction * attackSpeed;
-                _currentHorizontalSpeed = velocity.x;
-                _currentVerticalSpeed = velocity.y;
-                if ((!(_currentHorizontalSpeed > 0) || !_colRight)
-                && (!(_currentHorizontalSpeed < 0) || !_colLeft)
-                && (!(_currentVerticalSpeed > 0) || !_colUp)
-                && (!(_currentVerticalSpeed < 0) || !_colDown)) return;
-                // Don't walk through walls
-                _currentHorizontalSpeed = 0;
-                _currentVerticalSpeed = 0;
-                return;
-            }
-
+            if (direction == Vector2.zero) return;
+            Time.timeScale = 0.5f*realDeltatime + 0.05f;
+            var velocity = direction * attackSpeed;
+            _currentHorizontalSpeed = velocity.x;
+            _currentVerticalSpeed = velocity.y;
+            if ((!(_currentHorizontalSpeed > 0) || !_colRight)
+            && (!(_currentHorizontalSpeed < 0) || !_colLeft)
+            && (!(_currentVerticalSpeed > 0) || !_colUp)
+            && (!(_currentVerticalSpeed < 0) || !_colDown)) return;
+            // Don't walk through walls
+            _currentHorizontalSpeed = 0;
+            _currentVerticalSpeed = 0;
+            return;
+            
             _canControl = true;
         }
 
@@ -405,21 +456,17 @@ namespace TarodevController
         [SerializeField] private float dashCooldown;
         [SerializeField] private float notMovableInterval;
         [SerializeField] private bool enableDash;
-        [SerializeField] private int dashToWallIteration;
-        
 
         private bool _isDashing;
         private bool _canDash;
         private float _dashDeltaTime;
         private float _passedTime;
         private bool _consumeDashToWall;
-        private int _dashToWallCurrentIteration;
 
         private void CalculateDash()
         {
             if (!enableDash) return;
             if (_isAttacking) return;
-            
             if (Grounded)
             {
                 _canDash = true;
@@ -430,19 +477,11 @@ namespace TarodevController
                 _dashDeltaTime = 0;
                 _isDashing = false;
             }
-            
             if (UnityEngine.Input.GetKeyDown(KeyCode.LeftShift) && _canDash || _consumeDashToWall)
             {
                 _isDashing = true;
                 _canControl = false;
                 _canDash = false;
-                _dashToWallCurrentIteration++;
-                if (_dashToWallCurrentIteration >= dashToWallIteration)
-                {
-                    _consumeDashToWall = false;
-                    _dashToWallCurrentIteration = 0;
-                    _canControl = true;
-                }
             }
 
             if (_dashDeltaTime >= notMovableInterval) _canControl = true;
@@ -454,8 +493,6 @@ namespace TarodevController
                 new Vector2(playerVisual.transform.localScale.x, 0)
                 :
                 new Vector2(Input.X, Input.Y).normalized;
-            if (_consumeDashToWall) direction = 
-                    new Vector2(1, 0);
             var velocity = direction * dashSpeed;
             _currentHorizontalSpeed = velocity.x;
             _currentVerticalSpeed = velocity.y / 2;
