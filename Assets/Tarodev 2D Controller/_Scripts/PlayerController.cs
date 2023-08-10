@@ -178,14 +178,12 @@ namespace TarodevController
                 {
                     var hit = Physics2D.Raycast(point, range.Dir, _detectionRayLength, _livingEnemyLayer);
                     if (!hit) continue;
-                    Debug.Log(_FinishPattern);
                     if (!_isAttacking/* || !_FinishPattern*/)
                     {
                         _dead = true;
                         return hit;
                     }
                     var enemy = hit.collider.gameObject;
-                    Debug.Log(_FinishPattern);
                     if (enemy.GetComponent<Enemy>() != null) enemy.GetComponent<Enemy>().death();
                     _FinishPattern = false;
                     return hit;
