@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1223195698}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.92, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19484,7 +19484,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5124300410236407460}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.056, z: 0}
+  m_LocalPosition: {x: 0, y: -0.953, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19509,7 +19509,7 @@ MonoBehaviour:
   _source: {fileID: 771776640}
   _groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8
   _jumpParticles: {fileID: 2032819622}
   _launchParticles: {fileID: 1819912370}
   _moveParticles: {fileID: 1442387709}
@@ -19772,44 +19772,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneTransitionAnimator: {fileID: 0}
-  playerVisual: {fileID: 0}
+  playerVisual: {fileID: 5124300410236407460}
   enableDanmaku: 1
   _characterBounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0.5, y: 0.65, z: 0}
+    m_Center: {x: -0.01, y: 0.01, z: 0}
+    m_Extent: {x: 0.43, y: 0.73, z: 0}
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8
   _danmakuLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   _bulletLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   _livingEnemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   _nonLivingEnemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   _detectorCount: 3
   _detectionRayLength: 0.1
   _rayBuffer: 0.1
   _FinishPattern: 0
-  attackTime: 0
-  attackSpeed: 0
-  enableAttack: 0
-  attackCooldown: 0
-  angleBeared: 0
-  radius: 0
-  dashTime: 0
-  dashSpeed: 0
+  attackTime: 0.15
+  attackSpeed: 42
+  enableAttack: 1
+  attackCooldown: 0.05
+  angleBeared: 40
+  radius: 6
+  dashTime: 0.15
+  dashSpeed: 33
   dashCooldown: 0
-  notMovableInterval: 0
+  notMovableInterval: 0.1
   enableDash: 0
   _acceleration: 90
   _moveClamp: 13
-  _deAcceleration: 60
+  _deAcceleration: 300
   _apexBonus: 2
   _fallClamp: -40
   _minFallSpeed: 80
@@ -19819,12 +19819,12 @@ MonoBehaviour:
   overlapBoxSizeY: 0
   overlapBoxOffSetX: 0
   overlapBoxOffSetY: 0
-  _jumpHeight: 30
+  _jumpHeight: 25
   _jumpApexThreshold: 10
-  _coyoteTimeThreshold: 0.1
+  _coyoteTimeThreshold: 0.15
   _jumpBuffer: 0.1
   _jumpEndEarlyGravityModifier: 3
-  _doubleJumpEnabled: 0
+  _doubleJumpEnabled: 1
   _freeColliderIterations: 10
 --- !u!1 &6432609861764478824
 GameObject:
@@ -19852,7 +19852,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6432609861764478824}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.685, z: 0}
+  m_LocalPosition: {x: 0, y: 1.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19913,7 +19913,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &1025751691
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -19930,4 +19930,5 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
