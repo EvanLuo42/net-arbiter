@@ -179,7 +179,7 @@ namespace TarodevController
                     var hit = Physics2D.Raycast(point, range.Dir, _detectionRayLength, _livingEnemyLayer);
                     if (!hit) continue;
                     Debug.Log(_FinishPattern);
-                    if (!_isAttacking || !_FinishPattern)
+                    if (!_isAttacking/* || !_FinishPattern*/)
                     {
                         _dead = true;
                         return hit;
@@ -370,18 +370,18 @@ namespace TarodevController
             {
                 _attackDeltaTime = 0;
                 _isAttacking = false;
-                Time.timeScale = 1;
+                //Time.timeScale = 1;
             }
             if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0) && _cooldownDeltaTime >= attackCooldown)
             {
                 realStartTime = Time.realtimeSinceStartup;
                 Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, _livingEnemyLayer);
-                Transform EnemyTarget = colliders.Select(x => x.transform)
-                    .Where(x => Vector2.Angle(x.position - transform.position, _mainCamera.ScreenToWorldPoint(UnityEngine.Input.mousePosition)
-                    - transform.position) < angleBeared)
-                    .OrderBy(x => Vector2.Distance(x.position, transform.position))
-                    .FirstOrDefault();
-                if(EnemyTarget != null)if (EnemyTarget.GetComponent<Enemy>() != null)EnemyTarget.GetComponent<Enemy>().InstantiatePattern();
+                //Transform EnemyTarget = colliders.Select(x => x.transform)
+                //    .Where(x => Vector2.Angle(x.position - transform.position, _mainCamera.ScreenToWorldPoint(UnityEngine.Input.mousePosition)
+                //    - transform.position) < angleBeared)
+                //    .OrderBy(x => Vector2.Distance(x.position, transform.position))
+                //    .FirstOrDefault();
+                //if(EnemyTarget != null)if (EnemyTarget.GetComponent<Enemy>() != null)EnemyTarget.GetComponent<Enemy>().InstantiatePattern();
                 direction = colliders
                     .Select(x => x.transform)
                     .Where(x => Vector2.Angle(x.position - transform.position, _mainCamera.ScreenToWorldPoint(UnityEngine.Input.mousePosition)
@@ -430,7 +430,7 @@ namespace TarodevController
             _attackDeltaTime += Time.deltaTime - _attackPassedTime;
             if (_mainCamera is null) return;
             if (direction == Vector2.zero) return;
-            Time.timeScale = 0.5f*realDeltatime + 0.05f;
+            //Time.timeScale = 0.25f * realDeltatime + 0.1f;
             var velocity = direction * attackSpeed;
             _currentHorizontalSpeed = velocity.x;
             _currentVerticalSpeed = velocity.y;
@@ -442,8 +442,7 @@ namespace TarodevController
             _currentHorizontalSpeed = 0;
             _currentVerticalSpeed = 0;
             return;
-            
-            _canControl = true;
+            //_canControl = true;
         }
 
         #endregion

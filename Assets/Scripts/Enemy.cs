@@ -8,10 +8,10 @@ public class Enemy : MonoBehaviour
     public bool QiSiHuiSheng;
     public GameObject Pattern;
     // Start is called before the first frame update
-    public void InstantiatePattern()
-    {
-        Instantiate(Pattern,new Vector2(transform.position.x + 1.09f, transform.position.y + 0.92f),new Quaternion(0,0,0,0),transform);
-    }
+    //public void InstantiatePattern()
+    //{
+    //    Instantiate(Pattern,new Vector2(transform.position.x + 1.09f, transform.position.y + 0.92f),new Quaternion(0,0,0,0),transform);
+    //}
     public void death()
     {
         if (QiSiHuiSheng)UpdatePositionToFatherObject();
