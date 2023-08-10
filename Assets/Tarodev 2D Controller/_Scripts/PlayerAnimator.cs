@@ -56,11 +56,16 @@ namespace TarodevController {
                 _anim.SetTrigger(JumpDownKey);
             }
 
-            if (Mathf.Abs(_movement.x) > 0 && _movement.y == 0)
+            if ((_player as PlayerController).isAttacking)
+            {
+                _anim.Play("Attack");
+            }
+
+            if (Mathf.Abs(_movement.x) > 0 && _movement.y == 0 && !(_player as PlayerController).isAttacking)
             {
                 _anim.SetTrigger(RunKey);
             }
-            else if (Mathf.Abs(_movement.x) == 0 && _movement.y == 0)
+            else if (Mathf.Abs(_movement.x) == 0 && _movement.y == 0 && !(_player as PlayerController).isAttacking)
             {
                 _anim.Play("Idle");
             }
@@ -121,6 +126,7 @@ namespace TarodevController {
         private static readonly int JumpUpKey = Animator.StringToHash("JumpUp");
         private static readonly int JumpDownKey = Animator.StringToHash("JumpDown");
         private static readonly int RunKey = Animator.StringToHash("Run");
+        private static readonly int AttackKey = Animator.StringToHash("Attack");
 
         #endregion
     }
