@@ -33,22 +33,43 @@ namespace TarodevController {
             if (_player.Input.X != 0) transform.localScale = new Vector3(_player.Input.X > 0 ? 1 : -1, 1, 1);
 
             // Lean while running
-            var targetRotVector = new Vector3(0, 0, Mathf.Lerp(-_maxTilt, _maxTilt, Mathf.InverseLerp(-1, 1, _player.Input.X)));
-            _anim.transform.rotation = Quaternion.RotateTowards(_anim.transform.rotation, Quaternion.Euler(targetRotVector), _tiltSpeed * Time.deltaTime);
+            // var targetRotVector = new Vector3(0, 0, Mathf.Lerp(-_maxTilt, _maxTilt, Mathf.InverseLerp(-1, 1, _player.Input.X)));
+            // _anim.transform.rotation = Quaternion.RotateTowards(_anim.transform.rotation, Quaternion.Euler(targetRotVector), _tiltSpeed * Time.deltaTime);
 
             // Speed up idle while running
-            _anim.SetFloat(IdleSpeedKey, Mathf.Lerp(1, _maxIdleSpeed, Mathf.Abs(_player.Input.X)));
+            // _anim.SetFloat(IdleSpeedKey, Mathf.Lerp(1, _maxIdleSpeed, Mathf.Abs(_player.Input.X)));
 
             // Splat
-            if (_player.LandingThisFrame) {
-                _anim.SetTrigger(GroundedKey);
-                _source.PlayOneShot(_footsteps[Random.Range(0, _footsteps.Length)]);
+            // if (_player.LandingThisFrame) {
+            //     _anim.SetTrigger(JumpDownKey);
+            //     _source.PlayOneShot(_footsteps[Random.Range(0, _footsteps.Length)]);
+            // }
+            if (_movement.y > 0)
+            {
+                _anim.ResetTrigger(JumpDownKey);
+                _anim.SetTrigger(JumpUpKey);
+            }
+
+            if (_movement.y < 0)
+            {
+                _anim.ResetTrigger(JumpUpKey);
+                _anim.SetTrigger(JumpDownKey);
+            }
+
+            if (Mathf.Abs(_movement.x) > 0 && _movement.y == 0)
+            {
+                _anim.SetTrigger(RunKey);
+            }
+            else if (Mathf.Abs(_movement.x) == 0 && _movement.y == 0)
+            {
+                _anim.Play("Idle");
             }
 
             // Jump effects
             if (_player.JumpingThisFrame) {
-                _anim.SetTrigger(JumpKey);
-                _anim.ResetTrigger(GroundedKey);
+                // _anim.SetTrigger(JumpUpKey);
+                // _anim.ResetTrigger(JumpDownKey);
+                // _anim.SetTrigger(IdleKey);
 
                 // Only play particles when grounded (avoid coyote)
                 if (_player.Grounded) {
@@ -96,9 +117,10 @@ namespace TarodevController {
 
         #region Animation Keys
 
-        private static readonly int GroundedKey = Animator.StringToHash("Grounded");
-        private static readonly int IdleSpeedKey = Animator.StringToHash("IdleSpeed");
-        private static readonly int JumpKey = Animator.StringToHash("Jump");
+        private static readonly int IdleKey = Animator.StringToHash("Idle");
+        private static readonly int JumpUpKey = Animator.StringToHash("JumpUp");
+        private static readonly int JumpDownKey = Animator.StringToHash("JumpDown");
+        private static readonly int RunKey = Animator.StringToHash("Run");
 
         #endregion
     }
