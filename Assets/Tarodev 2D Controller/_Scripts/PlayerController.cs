@@ -178,7 +178,7 @@ namespace TarodevController
                 {
                     var hit = Physics2D.Raycast(point, range.Dir, _detectionRayLength, _livingEnemyLayer);
                     if (!hit) continue;
-                    if (!_isAttacking/* || !_FinishPattern*/)
+                    if (!isAttacking/* || !_FinishPattern*/)
                     {
                         _dead = true;
                         return hit;
@@ -327,7 +327,7 @@ namespace TarodevController
         [SerializeField] private float angleBeared;
         [SerializeField] private float radius;
 
-        private bool _isAttacking;
+        public bool isAttacking;
         private float _attackDeltaTime;
         private float _attackPassedTime;
         private float _cooldownDeltaTime;
@@ -367,7 +367,7 @@ namespace TarodevController
             if (_attackDeltaTime >= attackTime)
             {
                 _attackDeltaTime = 0;
-                _isAttacking = false;
+                isAttacking = false;
                 //Time.timeScale = 1;
             }
             if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0) && _cooldownDeltaTime >= attackCooldown)
@@ -414,11 +414,11 @@ namespace TarodevController
                 //_cooldownDeltaTime = 0;
                 //_targetPosition = ObjectsTransform.position;
                 //direction = Math.Direction(_targetPosition - transform.position);
-                _isAttacking = true;
+                isAttacking = true;
                 _cooldownDeltaTime = 0;
                 playerVisual.transform.localScale = new Vector3(direction.x > 0 ? 1 : -1, 1, 1);
             }
-            if (!_isAttacking)
+            if (!isAttacking)
             {
                 _cooldownDeltaTime += Time.deltaTime - _attackPassedTime;
                 _canControl = true;
@@ -463,7 +463,7 @@ namespace TarodevController
         private void CalculateDash()
         {
             if (!enableDash) return;
-            if (_isAttacking) return;
+            if (isAttacking) return;
             if (Grounded)
             {
                 _canDash = true;
