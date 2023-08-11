@@ -34666,6 +34666,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.953
       objectReference: {fileID: 0}
+    - target: {fileID: 6386671534388564217, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
+      propertyPath: m_ImpulseDefinition.m_ImpulseType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6386671534388564217, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
+      propertyPath: m_ImpulseDefinition.m_ImpulseShape
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: radius
       value: 6
@@ -34842,7 +34850,8 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 1.03
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6386671534388564217, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
 --- !u!1 &929733819 stripped
 GameObject:
