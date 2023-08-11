@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Windows;
 
 namespace TarodevController
 {
@@ -59,7 +60,6 @@ namespace TarodevController
             RunLivingEnemyCollisionChecks();
             RunNonLivingEnemyCollisionChecks();
             RunPortalCollisionChecks();
-            teleport();
 
 
             BounceBullet();
@@ -269,17 +269,15 @@ namespace TarodevController
                 {
                     var hit = Physics2D.Raycast(point, range.Dir, _detectionRayLength, _portallayer);
                     if (!hit) continue;
-                    SceneName = hit.transform.gameObject.GetComponent<nextscene>().scenename;
+                    if (UnityEngine.Input.GetKeyDown(KeyCode.E))
+                    {
+                        hit.transform.gameObject.GetComponent<NextScene>().SetTransition();
+                    }
                     return hit;
                 }
                 return false;
             }
-        }
-        private void teleport()
-        {
-            if (!_colPortal) return;
-            SceneManager.LoadScene(SceneName);
-        }
+        }   
         private bool _dead;
 
         private void DeathChecks()

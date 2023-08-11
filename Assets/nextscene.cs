@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class nextscene : MonoBehaviour
+public class NextScene : MonoBehaviour
 {
+    private Animator animator;
     
-    public string scenename;
+    public string sceneName;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        animator = GetComponent<Animator>();
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void SetTransition()
     {
-        if (collision.tag == "player")
-        {
-            SceneManager.LoadScene(scenename);
-        }
+        Debug.Log("ABC");
+        animator.SetTrigger("ChangeToNextScene");
     }
     // Update is called once per frame
-    void Update()
+    void ChangeScene()
     {
-        
+        SceneManager.LoadScene(sceneName);
     }
 }
