@@ -600,7 +600,9 @@ namespace TarodevController
 
         private float _effectsPassedTime;
         private float _effectsDeltaTime;
-        private float _effectsInterval;
+
+        [Header("Danmaku")]
+        [SerializeField] private float _effectsInterval;
 
         private void UpdateDanmakuEffects()
         {
@@ -611,6 +613,7 @@ namespace TarodevController
                 enableDash = true;
                 _doubleJumpEnabled = true;
             }
+            _effectsPassedTime = Time.time;
         }
 
         private void HandleDanmakuEffects(List<Danmaku.DanmakuType> effects)
