@@ -15,7 +15,6 @@ public class NextScene : MonoBehaviour
     }
     public void SetTransition()
     {
-        Debug.Log("ABC");
         animator.SetTrigger("ChangeToNextScene");
     }
     // Update is called once per frame

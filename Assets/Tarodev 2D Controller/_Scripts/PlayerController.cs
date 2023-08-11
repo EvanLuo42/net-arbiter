@@ -290,7 +290,8 @@ namespace TarodevController
                 {
                     var hit = Physics2D.Raycast(point, range.Dir, _detectionRayLength, _portallayer);
                     if (!hit) continue;
-                    SceneName = hit.transform.gameObject.GetComponent<nextscene>().scenename;
+                    if (UnityEngine.Input.GetKeyDown(KeyCode.E))
+                        hit.transform.gameObject.GetComponent<NextScene>().SetTransition();
                     return hit;
                 }
                 return false;
