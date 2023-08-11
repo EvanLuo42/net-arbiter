@@ -617,6 +617,9 @@ namespace TarodevController
                     case Danmaku.DanmakuType.DisableDoubleJump:
                         _doubleJumpEnabled = false;
                         break;
+                    case Danmaku.DanmakuType.Die:
+                        _dead = true;
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

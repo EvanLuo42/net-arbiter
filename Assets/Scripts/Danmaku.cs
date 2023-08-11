@@ -9,6 +9,6 @@ public class Danmaku : MonoBehaviour
     
     public enum DanmakuType
     {
-        DisableDash, DisableDoubleJump, DashUntilColWall
+        DisableDash, DisableDoubleJump, DashUntilColWall,Die
     }
 }

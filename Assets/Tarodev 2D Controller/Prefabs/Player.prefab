@@ -19776,8 +19776,8 @@ MonoBehaviour:
   playerVisual: {fileID: 5124300410236407460}
   enableDanmaku: 1
   _characterBounds:
-    m_Center: {x: -0.01, y: 0.01, z: 0}
-    m_Extent: {x: 0.43, y: 0.73, z: 0}
+    m_Center: {x: -0.01, y: -0.06, z: 0}
+    m_Extent: {x: 0.43, y: 0.7, z: 0}
   _groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -19789,7 +19789,7 @@ MonoBehaviour:
     m_Bits: 256
   _portallayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   _livingEnemyLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -19803,17 +19803,17 @@ MonoBehaviour:
   _FinishPattern: 0
   SceneName: 
   attackTime: 0.15
-  attackSpeed: 42
+  attackSpeed: 73
   enableAttack: 1
   attackCooldown: 0.05
-  angleBeared: 40
-  radius: 6
+  angleBeared: 20
+  radius: 10
   isAttacking: 0
   dashTime: 0.15
   dashSpeed: 33
   dashCooldown: 0
   notMovableInterval: 0.1
-  enableDash: 0
+  enableDash: 1
   _acceleration: 90
   _moveClamp: 13
   _deAcceleration: 300
@@ -19980,7 +19980,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &1025751691
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -19997,4 +19997,5 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

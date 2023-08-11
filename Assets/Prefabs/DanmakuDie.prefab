@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -7521460073707186311}
   - component: {fileID: -3520151772845982858}
   m_Layer: 7
-  m_Name: DanmakuDashUntilWall
+  m_Name: DanmakuDie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6143504931264620225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.4452, y: 0.0156, z: 0}
-  m_LocalScale: {x: 1.5493346, y: 1.5571513, z: 1}
+  m_LocalPosition: {x: -8.719876, y: 0.16859755, z: 0}
+  m_LocalScale: {x: 1.549335, y: 1.549335, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -99,7 +99,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.009891033, y: 0}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -110,7 +110,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.0020323, y: 1}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &-3520151772845982858
 MonoBehaviour:
@@ -126,4 +126,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroy: 0
   direction: {x: 0, y: 0}
-  danmakuTypes: 02000000
+  danmakuTypes: 03000000
