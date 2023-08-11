@@ -31,16 +31,17 @@ namespace TarodevController
         public GameObject sceneTransitionAnimator;
 
         public GameObject playerVisual;
-
         // This is horrible, but for some reason colliders are not fully established when update starts...
         private bool _active;
 
         private bool _canControl = true;
 
+        private Cinemachine.CinemachineCollisionImpulseSource MyInpulse;
         void Awake()
         {
             Invoke(nameof(Activate), 0.5f);
             _mainCamera = Camera.main;
+            MyInpulse = GetComponent<Cinemachine.CinemachineCollisionImpulseSource>();
         }
 
         void Activate() => _active = true;
@@ -397,6 +398,8 @@ namespace TarodevController
             }
             if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0) && _cooldownDeltaTime >= attackCooldown)
             {
+                
+                
                 realStartTime = Time.realtimeSinceStartup;
                 Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, _livingEnemyLayer);
                 //Transform EnemyTarget = colliders.Select(x => x.transform)
@@ -412,11 +415,13 @@ namespace TarodevController
                     .OrderBy(x => Vector2.Distance(x.position, transform.position))
                     .Select(x => Math.Direction(x.position - transform.position))
                     .FirstOrDefault();
-                if (direction == null)
+                if (direction == null || direction == Vector2.zero)
                 {
                     //direction = new Vector2(0, 0);
                     return;
                 }
+                MyInpulse.GenerateImpulse(10);
+                Debug.Log("inpulsed");
                 _canControl = false;
 
                 //int num = 0;
