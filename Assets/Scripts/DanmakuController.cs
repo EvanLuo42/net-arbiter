@@ -9,6 +9,7 @@ public class DanmakuController : MonoBehaviour
     public GameObject danmakuPrefab;
     public float danmakuSpeed;
     public Vector2 direction;
+    public Sprite[] sprites;
     private Dictionary<float, Tuple<GameObject, Danmaku>> _danmakus = new();
     private float _passedTime;
     private float _lastShootTime;
@@ -32,6 +33,8 @@ public class DanmakuController : MonoBehaviour
         if (!(_passedTime - _lastShootTime > interval)) return;
         
         var newDanmaku = Instantiate(danmakuPrefab, transform.position, Quaternion.identity, transform);
+        var sprite = newDanmaku.GetComponent<SpriteRenderer>();
+        sprite.sprite = sprites[new System.Random().Next(0, sprites.Length - 1)];
         var newDanmakuController = newDanmaku.GetComponent<Danmaku>();
         newDanmakuController.direction = direction;
         _danmakus.Add(_passedTime, new Tuple<GameObject, Danmaku>(newDanmaku, newDanmakuController));

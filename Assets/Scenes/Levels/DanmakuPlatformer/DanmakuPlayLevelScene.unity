@@ -192,6 +192,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1997041282}
     m_Modifications:
+    - target: {fileID: 2811642788967924730, guid: d8591481260b3514b8cf107da77ee556, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7880104844119742864, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_Name
       value: DanmakuShooterYellow
@@ -204,6 +208,14 @@ PrefabInstance:
       propertyPath: danmakuPrefab
       value: 
       objectReference: {fileID: 6143504931264620225, guid: 8796e8ea7003f4056bb0020ca9dce389, type: 3}
+    - target: {fileID: 7880104844119742865, guid: d8591481260b3514b8cf107da77ee556, type: 3}
+      propertyPath: sprites.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7880104844119742865, guid: d8591481260b3514b8cf107da77ee556, type: 3}
+      propertyPath: sprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: b0516d30011636e4780ec13033aab470, type: 3}
     - target: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -342,7 +354,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7880104844119742865, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: interval
-      value: 0.35
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7880104844119742865, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: lifetime
@@ -360,6 +372,14 @@ PrefabInstance:
       propertyPath: danmakuPrefab
       value: 
       objectReference: {fileID: 6143504931264620225, guid: bd9bd3fc9543a4b0284aeefd9f8328ba, type: 3}
+    - target: {fileID: 7880104844119742865, guid: d8591481260b3514b8cf107da77ee556, type: 3}
+      propertyPath: sprites.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7880104844119742865, guid: d8591481260b3514b8cf107da77ee556, type: 3}
+      propertyPath: sprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6efd63e8091c6ef41a81b4e2cb74ee20, type: 3}
     - target: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1412,6 +1432,14 @@ PrefabInstance:
       propertyPath: danmakuPrefab
       value: 
       objectReference: {fileID: 6143504931264620225, guid: 8796e8ea7003f4056bb0020ca9dce389, type: 3}
+    - target: {fileID: 7880104844119742865, guid: d8591481260b3514b8cf107da77ee556, type: 3}
+      propertyPath: sprites.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7880104844119742865, guid: d8591481260b3514b8cf107da77ee556, type: 3}
+      propertyPath: sprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: b0516d30011636e4780ec13033aab470, type: 3}
     - target: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -2000,6 +2028,7 @@ MonoBehaviour:
   danmakuPrefab: {fileID: 6143504931264620225, guid: bd9bd3fc9543a4b0284aeefd9f8328ba, type: 3}
   danmakuSpeed: 5
   direction: {x: -1, y: 0}
+  sprites: []
 --- !u!4 &930866819
 Transform:
   m_ObjectHideFlags: 0
@@ -2171,6 +2200,14 @@ PrefabInstance:
       propertyPath: danmakuPrefab
       value: 
       objectReference: {fileID: 6143504931264620225, guid: bd9bd3fc9543a4b0284aeefd9f8328ba, type: 3}
+    - target: {fileID: 7880104844119742865, guid: d8591481260b3514b8cf107da77ee556, type: 3}
+      propertyPath: sprites.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7880104844119742865, guid: d8591481260b3514b8cf107da77ee556, type: 3}
+      propertyPath: sprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6efd63e8091c6ef41a81b4e2cb74ee20, type: 3}
     - target: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_RootOrder
       value: 3
