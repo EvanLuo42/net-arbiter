@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -23,8 +24,13 @@ namespace TarodevController {
         private bool _playerGrounded;
         private ParticleSystem.MinMaxGradient _currentGradient;
         private Vector2 _movement;
+        private CinemachineImpulseSource _impulseSource;
 
-        void Awake() => _player = GetComponentInParent<IPlayerController>();
+        void Awake()
+        {
+            _player = GetComponentInParent<IPlayerController>();
+            _impulseSource = GetComponent<CinemachineImpulseSource>();
+        }
 
         void Update() {
             if (_player == null) return;
@@ -59,6 +65,7 @@ namespace TarodevController {
             if ((_player as PlayerController).isAttacking)
             {
                 _anim.Play("Attack");
+                _impulseSource.GenerateImpulse(new Vector3(0.08f, 0, 0));
             }
 
             if (Mathf.Abs(_movement.x) > 0 && _movement.y == 0 && !(_player as PlayerController).isAttacking)

@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using static Unity.VisualScripting.Member;
 
 namespace TarodevController
 {
@@ -398,8 +400,6 @@ namespace TarodevController
             }
             if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0) && _cooldownDeltaTime >= attackCooldown)
             {
-                
-                
                 realStartTime = Time.realtimeSinceStartup;
                 Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, _livingEnemyLayer);
                 //Transform EnemyTarget = colliders.Select(x => x.transform)
@@ -420,8 +420,6 @@ namespace TarodevController
                     //direction = new Vector2(0, 0);
                     return;
                 }
-                MyInpulse.GenerateImpulse(10);
-                Debug.Log("inpulsed");
                 _canControl = false;
 
                 //int num = 0;
