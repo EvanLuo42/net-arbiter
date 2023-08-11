@@ -33,12 +33,10 @@ namespace TarodevController
 
         private bool _canControl = true;
         private Vector3 checkpoints;
-        private Cinemachine.CinemachineCollisionImpulseSource MyInpulse;
         void Start()
         {
             Invoke(nameof(Activate), 0.5f);
             _mainCamera = Camera.main;
-            MyInpulse = GetComponent<Cinemachine.CinemachineCollisionImpulseSource>();
             transform.position = managedeath.Instance.lastPosition;
             //rebouncecontroller.GetComponent<cunchuqi>().setPositionToWhatIsCollected();
         }
@@ -62,7 +60,6 @@ namespace TarodevController
             RunNonLivingEnemyCollisionChecks();
             RunPortalCollisionChecks();
             RunCheckPointsCollisionChecks();
-            teleport();
 
 
             BounceBullet();
@@ -296,11 +293,6 @@ namespace TarodevController
                 }
                 return false;
             }
-        }
-        private void teleport()
-        {
-            if (!_colPortal) return;
-            SceneManager.LoadScene(SceneName);
         }
         private bool _dead;
 

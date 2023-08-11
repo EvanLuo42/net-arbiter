@@ -703,7 +703,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &85193746
 Animator:
-  serializedVersion: 5
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -720,8 +720,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!19719996 &85193747
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -34968,7 +34967,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &964410322
 Animator:
-  serializedVersion: 5
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -34985,8 +34984,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &971124842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45263,9 +45261,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Isometric Diamond (1) 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3597560836865082250, guid: 8cb19f753338a17489fa679bed981902, type: 3}
+      propertyPath: m_Size.x
+      value: 4.556035
+      objectReference: {fileID: 0}
+    - target: {fileID: 3597560836865082250, guid: 8cb19f753338a17489fa679bed981902, type: 3}
+      propertyPath: m_Size.y
+      value: 4.653013
+      objectReference: {fileID: 0}
+    - target: {fileID: 3597560836865082250, guid: 8cb19f753338a17489fa679bed981902, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.14275217
+      objectReference: {fileID: 0}
+    - target: {fileID: 3597560836865082250, guid: 8cb19f753338a17489fa679bed981902, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.25956392
+      objectReference: {fileID: 0}
     - target: {fileID: 3960717890717324510, guid: 8cb19f753338a17489fa679bed981902, type: 3}
       propertyPath: sceneName
-      value: DanmakuLab
+      value: MosaicScene
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cb19f753338a17489fa679bed981902, type: 3}

@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/StartScene.unity
     guid: e202b5ad53ff41042a659ca4d1c2a6a6
   - enabled: 1
+    path: Assets/Scenes/IntroScene.unity
+    guid: 58247f64361ec894583091dba5df04a9
+  - enabled: 1
     path: Assets/Scenes/Levels/DanmakuPlatformer/DanmakuTutorialLevel.unity
     guid: 665d3f31a8e21f349aa96c43d4d3bf35
   - enabled: 1
