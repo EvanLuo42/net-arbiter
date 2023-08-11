@@ -31,16 +31,17 @@ namespace TarodevController
         public GameObject sceneTransitionAnimator;
 
         public GameObject playerVisual;
-
         // This is horrible, but for some reason colliders are not fully established when update starts...
         private bool _active;
 
         private bool _canControl = true;
 
+        private Cinemachine.CinemachineCollisionImpulseSource MyInpulse;
         void Awake()
         {
             Invoke(nameof(Activate), 0.5f);
             _mainCamera = Camera.main;
+            MyInpulse = GetComponent<Cinemachine.CinemachineCollisionImpulseSource>();
         }
 
         void Activate() => _active = true;
@@ -59,6 +60,9 @@ namespace TarodevController
             RunBulletCollisionChecks();
             RunLivingEnemyCollisionChecks();
             RunNonLivingEnemyCollisionChecks();
+            RunPortalCollisionChecks();
+            teleport();
+
 
             BounceBullet();
 
@@ -74,7 +78,7 @@ namespace TarodevController
             // OnDrawGizmos();
             MoveCharacter(); // Actually perform the axis movement
 
-            if (transform.position.y < -50) sceneTransitionAnimator.GetComponent<SceneTransitionController>().SetTransition(SceneManager.GetActiveScene().name);
+            if (transform.position.y < -30) sceneTransitionAnimator.GetComponent<SceneTransitionController>().SetTransition(SceneManager.GetActiveScene().name);
         }
 
 
@@ -104,6 +108,7 @@ namespace TarodevController
         [SerializeField] private LayerMask _groundLayer;
         [SerializeField] private LayerMask _danmakuLayer;
         [SerializeField] private LayerMask _bulletLayer;
+        [SerializeField] private LayerMask _portallayer;
         [SerializeField] private LayerMask _livingEnemyLayer;
         [SerializeField] private LayerMask _nonLivingEnemyLayer;
         [SerializeField] private int _detectorCount = 3;
@@ -114,11 +119,12 @@ namespace TarodevController
         private bool _colUp, _colRight, _colDown, _colLeft;
         private bool _colDanmaku, _colDanmakuGround;
         private bool _colBullet;
+        public bool _colPortal;
         private bool _colLivingEnemy;
         private bool _colNonLivingEnemy;
         public bool _FinishPattern;
         private float _timeLeftGrounded;
-
+        public string SceneName;
         // We use these raycast checks for pre-collision information
         private void RunEnvironmentCollisionChecks()
         {
@@ -254,13 +260,33 @@ namespace TarodevController
                 return false;
             }
         }
-
+        private void RunPortalCollisionChecks()
+        {
+            _colPortal = RunDetection(_raysUp) || RunDetection(_raysLeft) || RunDetection(_raysRight) || RunDetection(_raysDown);
+            bool RunDetection(RayRange range)
+            {
+                foreach (var point in EvaluateRayPositions(range))
+                {
+                    var hit = Physics2D.Raycast(point, range.Dir, _detectionRayLength, _portallayer);
+                    if (!hit) continue;
+                    SceneName = hit.transform.gameObject.GetComponent<nextscene>().scenename;
+                    return hit;
+                }
+                return false;
+            }
+        }
+        private void teleport()
+        {
+            if (!_colPortal) return;
+            SceneManager.LoadScene(SceneName);
+        }
         private bool _dead;
 
         private void DeathChecks()
         {
             if (!_dead) return;
             _dead = false;
+            _canControl = false;
             sceneTransitionAnimator
                 .GetComponent<SceneTransitionController>()
                 .SetTransition(SceneManager.GetActiveScene().name);
@@ -372,6 +398,8 @@ namespace TarodevController
             }
             if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0) && _cooldownDeltaTime >= attackCooldown)
             {
+                
+                
                 realStartTime = Time.realtimeSinceStartup;
                 Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, _livingEnemyLayer);
                 //Transform EnemyTarget = colliders.Select(x => x.transform)
@@ -387,11 +415,13 @@ namespace TarodevController
                     .OrderBy(x => Vector2.Distance(x.position, transform.position))
                     .Select(x => Math.Direction(x.position - transform.position))
                     .FirstOrDefault();
-                if (direction == null)
+                if (direction == null || direction == Vector2.zero)
                 {
                     //direction = new Vector2(0, 0);
                     return;
                 }
+                MyInpulse.GenerateImpulse(10);
+                Debug.Log("inpulsed");
                 _canControl = false;
 
                 //int num = 0;
