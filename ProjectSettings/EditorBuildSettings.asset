@@ -8,7 +8,25 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/AfterWorkScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/DanmakuScene.unity
-    guid: acd29ec61b4ab41cebc0021cf59359d8
+    path: Assets/Scenes/Attack1-1.unity
+    guid: ddb012808e3fe694299652ede3efb621
+  - enabled: 1
+    path: Assets/Scenes/MosaicScene.unity
+    guid: 14a6141526ae0482a961b9daf113aa6b
+  - enabled: 1
+    path: Assets/Scenes/DanmakuTutorialLevel 2.unity
+    guid: 665d3f31a8e21f349aa96c43d4d3bf35
+  - enabled: 1
+    path: Assets/Scenes/DanmakuPlayLevelScene.unity
+    guid: 96812f6a5af2c004eb37abcf57f66ca9
+  - enabled: 1
+    path: Assets/Scenes/DanmakuLab.unity
+    guid: b72e9b6256c10684fadbe4b49a2b0117
+  - enabled: 1
+    path: Assets/Scenes/Attack tutorial.unity
+    guid: 6bfc9b7d0739ce2479aa52cc11b1729c
   m_configObjects: {}
