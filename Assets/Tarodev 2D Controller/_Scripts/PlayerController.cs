@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-using static Unity.VisualScripting.Member;
 
 namespace TarodevController
 {
@@ -69,6 +65,8 @@ namespace TarodevController
             BounceBullet();
 
             DeathChecks();
+            
+            UpdateDanmakuEffects();
 
             if (_canControl) CalculateWalk(); // Horizontal movement
             CalculateAttack();
@@ -600,6 +598,24 @@ namespace TarodevController
 
         #region Danmaku
 
+        private float _effectsPassedTime;
+        private float _effectsDeltaTime;
+
+        [Header("Danmaku")]
+        [SerializeField] private float _effectsInterval;
+
+        private void UpdateDanmakuEffects()
+        {
+            _effectsDeltaTime += Time.time - _effectsPassedTime;
+            if (_effectsDeltaTime >= _effectsInterval)
+            {
+                _effectsDeltaTime = 0;
+                enableDash = true;
+                _doubleJumpEnabled = true;
+            }
+            _effectsPassedTime = Time.time;
+        }
+
         private void HandleDanmakuEffects(List<Danmaku.DanmakuType> effects)
         {
             foreach (var effect in effects)
@@ -608,12 +624,14 @@ namespace TarodevController
                 {
                     case Danmaku.DanmakuType.DisableDash:
                         enableDash = false;
+                        _effectsDeltaTime = 0;
                         break;
                     case Danmaku.DanmakuType.DashUntilColWall:
                         _consumeDashToWall = true;
                         break;
                     case Danmaku.DanmakuType.DisableDoubleJump:
                         _doubleJumpEnabled = false;
+                        _effectsDeltaTime = 0;
                         break;
                     case Danmaku.DanmakuType.Die:
                         _dead = true;

@@ -234,7 +234,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_LocalRotation.y
@@ -242,7 +242,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1340,7 +1340,7 @@ PrefabInstance:
       objectReference: {fileID: 6143504931264620225, guid: 8796e8ea7003f4056bb0020ca9dce389, type: 3}
     - target: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_LocalScale.x
@@ -2183,7 +2183,7 @@ PrefabInstance:
       objectReference: {fileID: 6143504931264620225, guid: bd9bd3fc9543a4b0284aeefd9f8328ba, type: 3}
     - target: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_LocalScale.x
@@ -3322,6 +3322,10 @@ PrefabInstance:
       value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
+      propertyPath: _effectsInterval
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6432609860406773168, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: _doubleJumpEnabled
       value: 1
       objectReference: {fileID: 0}
@@ -3580,7 +3584,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1930782274
 Animator:
-  serializedVersion: 5
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3597,8 +3601,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!4 &1985582015 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3788704548694425257, guid: fe21f78af5a624529a2ed439cfc22fc3, type: 3}
@@ -25992,7 +25995,7 @@ TilemapCollider2D:
   m_ExtrusionFactor: 0.00001
 --- !u!95 &2074394586
 Animator:
-  serializedVersion: 5
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -26009,8 +26012,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2112443935
 GameObject:
   m_ObjectHideFlags: 0
