@@ -5,14 +5,16 @@ using UnityEngine;
 
 public class cunchuqi : MonoBehaviour
 {
+    public GameObject player;
     public Vector3 playerpositioncollected;
+    public Transform origin;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        playerpositioncollected = transform.position;
+        playerpositioncollected = origin.position;
         DontDestroyOnLoad(this);
     }
-    public void setPositionToWhatIsCollected(GameObject player)
+    public void setPositionToWhatIsCollected()
     {
         player.transform.position = playerpositioncollected;
     }

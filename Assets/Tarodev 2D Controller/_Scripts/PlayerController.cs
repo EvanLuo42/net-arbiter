@@ -27,22 +27,24 @@ namespace TarodevController
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
 
         public GameObject sceneTransitionAnimator;
-
         public GameObject playerVisual;
         // This is horrible, but for some reason colliders are not fully established when update starts...
         private bool _active;
 
         private bool _canControl = true;
-
+        private Vector3 checkpoints;
         private Cinemachine.CinemachineCollisionImpulseSource MyInpulse;
-        void Awake()
+        void Start()
         {
             Invoke(nameof(Activate), 0.5f);
             _mainCamera = Camera.main;
             MyInpulse = GetComponent<Cinemachine.CinemachineCollisionImpulseSource>();
+            transform.position = managedeath.Instance.lastPosition;
+            //rebouncecontroller.GetComponent<cunchuqi>().setPositionToWhatIsCollected();
         }
 
         void Activate() => _active = true;
+        
 
         private void Update()
         {
@@ -59,6 +61,7 @@ namespace TarodevController
             RunLivingEnemyCollisionChecks();
             RunNonLivingEnemyCollisionChecks();
             RunPortalCollisionChecks();
+            RunCheckPointsCollisionChecks();
             teleport();
 
 
@@ -109,6 +112,7 @@ namespace TarodevController
         [SerializeField] private LayerMask _danmakuLayer;
         [SerializeField] private LayerMask _bulletLayer;
         [SerializeField] private LayerMask _portallayer;
+        [SerializeField] private LayerMask _checkpointlayer;
         [SerializeField] private LayerMask _livingEnemyLayer;
         [SerializeField] private LayerMask _nonLivingEnemyLayer;
         [SerializeField] private int _detectorCount = 3;
@@ -120,6 +124,7 @@ namespace TarodevController
         private bool _colDanmaku, _colDanmakuGround;
         private bool _colBullet;
         public bool _colPortal;
+        public bool _colcheckpoint;
         private bool _colLivingEnemy;
         private bool _colNonLivingEnemy;
         public bool _FinishPattern;
@@ -240,6 +245,22 @@ namespace TarodevController
             }
         }
 
+        private void RunCheckPointsCollisionChecks()
+        {
+            _colcheckpoint = RunDetection(_raysUp) || RunDetection(_raysLeft) || RunDetection(_raysRight) || RunDetection(_raysDown);
+            bool RunDetection(RayRange range)
+            {
+                foreach (var point in EvaluateRayPositions(range))
+                {
+                    var hit = Physics2D.Raycast(point, range.Dir, _detectionRayLength, _checkpointlayer);
+                    if (!hit) continue;
+                    hit.transform.gameObject.GetComponent<checkpoint>().updatetomanager();
+                    hit.transform.gameObject.GetComponent<Animator>().SetTrigger("shanyishan");
+                    return hit;
+                }
+                return false;
+            }
+        }
         private void RunBulletCollisionChecks()
         {
             if (!bounceEnabled) return;
@@ -287,6 +308,7 @@ namespace TarodevController
             if (!_dead) return;
             _dead = false;
             _canControl = false;
+            
             sceneTransitionAnimator
                 .GetComponent<SceneTransitionController>()
                 .SetTransition(SceneManager.GetActiveScene().name);
