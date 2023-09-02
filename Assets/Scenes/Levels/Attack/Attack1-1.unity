@@ -703,7 +703,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &85193746
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -720,7 +720,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!19719996 &85193747
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -33408,7 +33409,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 769551806}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 89.4, y: -22.1, z: -10}
+  m_LocalPosition: {x: -14.56, y: -12.59, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -34659,11 +34660,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773170, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 89.4
+      value: -14.56
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773170, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -22.1
+      value: -12.59
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773170, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -34898,6 +34899,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1240731252}
     m_Modifications:
+    - target: {fileID: 1609090127149764432, guid: d28e72537f110024d81ec52d5a73c346, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.27
+      objectReference: {fileID: 0}
     - target: {fileID: 3669006840601736240, guid: d28e72537f110024d81ec52d5a73c346, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -34967,7 +34972,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &964410322
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -34984,7 +34989,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &971124842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45279,7 +45285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3960717890717324510, guid: 8cb19f753338a17489fa679bed981902, type: 3}
       propertyPath: sceneName
-      value: MosaicScene
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cb19f753338a17489fa679bed981902, type: 3}
@@ -46525,11 +46531,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4545723660589175533, guid: c471af7dc4296994494a285daf020cb6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 89.4
+      value: -14.56
       objectReference: {fileID: 0}
     - target: {fileID: 4545723660589175533, guid: c471af7dc4296994494a285daf020cb6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -22.1
+      value: -12.59
       objectReference: {fileID: 0}
     - target: {fileID: 4545723660589175533, guid: c471af7dc4296994494a285daf020cb6, type: 3}
       propertyPath: m_LocalPosition.z

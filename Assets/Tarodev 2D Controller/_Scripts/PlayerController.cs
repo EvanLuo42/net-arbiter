@@ -35,9 +35,17 @@ namespace TarodevController
         private Vector3 checkpoints;
         void Start()
         {
+
             Invoke(nameof(Activate), 0.5f);
             _mainCamera = Camera.main;
-            transform.position = managedeath.Instance.lastPosition;
+            if(managedeath.Instance != null)
+            {
+                transform.position = managedeath.Instance.lastPosition;
+            }
+            foreach (GameObject manage in GameObject.FindGameObjectsWithTag("management"))
+            {
+                manage.GetComponent<managedeath>().Check();
+            }
             //rebouncecontroller.GetComponent<cunchuqi>().setPositionToWhatIsCollected();
         }
 
@@ -74,7 +82,7 @@ namespace TarodevController
             CalculateJumpApex(); // Affects fall speed, so calculate before gravity
             CalculateGravity(); // Vertical movement
             CalculateJump(); // Possibly overrides vertical
-
+            setdeadcheck();
             // OnDrawGizmos();
             MoveCharacter(); // Actually perform the axis movement
 
@@ -295,7 +303,10 @@ namespace TarodevController
             }
         }
         private bool _dead;
-
+        public void Setdead()
+        {
+            _dead = true;
+        }
         private void DeathChecks()
         {
             if (!_dead) return;
@@ -306,7 +317,13 @@ namespace TarodevController
                 .GetComponent<SceneTransitionController>()
                 .SetTransition(SceneManager.GetActiveScene().name);
         }
-
+        private void setdeadcheck()
+        {
+            if (UnityEngine.Input.GetKey(KeyCode.U))
+            {
+                _dead = true;
+            }
+        }
         private void CalculateRayRanged()
         {
             // This is crying out for some kind of refactor. 

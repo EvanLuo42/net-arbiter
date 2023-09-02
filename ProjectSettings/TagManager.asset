@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Danmaku
   - Bullet
+  - management
   layers:
   - Default
   - TransparentFX

@@ -26,7 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Levels/Attack/Attack1-1.unity
     guid: ddb012808e3fe694299652ede3efb621
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Levels/MosaicBoss/MosaicScene.unity
     guid: 14a6141526ae0482a961b9daf113aa6b
   - enabled: 1

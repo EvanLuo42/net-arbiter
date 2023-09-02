@@ -1304,7 +1304,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1408682468}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.63, y: 4.14, z: -10}
+  m_LocalPosition: {x: -45.39, y: 4.48, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1498,7 +1498,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1627792418}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.63, y: 4.14, z: -10}
+  m_LocalPosition: {x: -45.39, y: 4.48, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1598,11 +1598,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773170, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.63
+      value: -45.39
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773170, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.14
+      value: 4.48
       objectReference: {fileID: 0}
     - target: {fileID: 6432609860406773170, guid: 42303504a4fc90a43bc5178df9876bf2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1764,11 +1764,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -46.01
+      value: -45.899998
       objectReference: {fileID: 0}
     - target: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -44.1
+      value: -45.42
       objectReference: {fileID: 0}
     - target: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4990,7 +4990,7 @@ TilemapCollider2D:
   m_ExtrusionFactor: 0.00001
 --- !u!95 &2074394586
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5007,7 +5007,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &2093429703 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7880104844119742870, guid: d8591481260b3514b8cf107da77ee556, type: 3}
