@@ -36,6 +36,7 @@ namespace TarodevController
         {
             Invoke(nameof(Activate), 0.5f);
             _mainCamera = Camera.main;
+<<<<<<< Updated upstream
             if(managedeath.Instance != null)
             {
                 transform.position = managedeath.Instance.lastPosition;
@@ -44,6 +45,10 @@ namespace TarodevController
             //{
             //    //manage.GetComponent<managedeath>().Check();
             //}
+=======
+            if (managedeath.Instance == null) return;
+            transform.position = managedeath.Instance.lastPosition;
+>>>>>>> Stashed changes
             //rebouncecontroller.GetComponent<cunchuqi>().setPositionToWhatIsCollected();
         }
 
@@ -73,7 +78,7 @@ namespace TarodevController
             DeathChecks();
             
             UpdateDanmakuEffects();
-
+            DetectDeath();
             if (_canControl) CalculateWalk(); // Horizontal movement
             CalculateAttack();
             CalculateDash();
@@ -136,6 +141,11 @@ namespace TarodevController
         private float _timeLeftGrounded;
         public string SceneName;
         // We use these raycast checks for pre-collision information
+        private void DetectDeath()
+        {
+            if (!UnityEngine.Input.GetKeyDown(KeyCode.U)) return;
+            _dead = true;
+        }
         private void RunEnvironmentCollisionChecks()
         {
             // Ground
@@ -346,6 +356,10 @@ namespace TarodevController
             }
         }
 
+        public void SetDeath()
+        {
+            _dead = true;
+        }
         private void OnDrawGizmos()
         {
             // Bounds
