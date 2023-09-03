@@ -20,9 +20,9 @@ public class SceneTransitionController : MonoBehaviour
         SceneManager.LoadScene(_nextScene);
     }
 
-    public void SetTransition(string nextScene)
+    public void SetTransition(/*string nextScene*/)
     {
-        _nextScene = nextScene;
+        //_nextScene = nextScene;
         _animator.SetTrigger("FadeOut");
     }
 }

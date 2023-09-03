@@ -6,30 +6,27 @@ public class managedeath : MonoBehaviour
 {
     public static managedeath Instance;
     public Vector2 lastPosition;
-    string sceneName;
+    //string sceneName;
     // Start is called before the first frame update
     void Awake()
     {
-        sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        Check();
-        if(Instance == null)
-        {
-            Instance = this;
-        }
-        DontDestroyOnLoad(this);
+        //sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        //Check();
+        Instance = this;
+        lastPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
     }
-    private void Start()
-    {
-        Check();
-    }
+    //private void Start()
+    //{
+    //    Check();
+    //}
 
 
-    public void Check()
-    {
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != sceneName)
-        {
-            Destroy(this);
-        }
-    }
+    //public void Check()
+    //{
+    //    if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != sceneName)
+    //    {
+    //        Destroy(this);
+    //    }
+    //}
     // Update is called once per frame
 }

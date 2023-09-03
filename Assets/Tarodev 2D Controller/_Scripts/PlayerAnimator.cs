@@ -31,7 +31,10 @@ namespace TarodevController {
             _player = GetComponentInParent<IPlayerController>();
             _impulseSource = GetComponent<CinemachineImpulseSource>();
         }
-
+        public void attackdone()
+        {
+            (_player as PlayerController).isTryingAttacking = false;
+        }
         void Update() {
             if (_player == null) return;
 
@@ -61,18 +64,19 @@ namespace TarodevController {
                 _anim.ResetTrigger(JumpUpKey);
                 _anim.SetTrigger(JumpDownKey);
             }
-
-            if ((_player as PlayerController).isAttacking)
+            if((_player as PlayerController).isTryingAttacking)
             {
                 _anim.Play("Attack");
-                _impulseSource.GenerateImpulse(new Vector3(0.08f, 0, 0));
+                if ((_player as PlayerController).isAttacking)
+                {
+                    _impulseSource.GenerateImpulse(new Vector3(0.08f, 0, 0));
+                }
             }
-
-            if (Mathf.Abs(_movement.x) > 0 && _movement.y == 0 && !(_player as PlayerController).isAttacking)
+            if (Mathf.Abs(_movement.x) > 0 && _movement.y == 0 && !(_player as PlayerController).isTryingAttacking)
             {
                 _anim.SetTrigger(RunKey);
             }
-            else if (Mathf.Abs(_movement.x) == 0 && _movement.y == 0 && !(_player as PlayerController).isAttacking)
+            else if (Mathf.Abs(_movement.x) == 0 && _movement.y == 0 && !(_player as PlayerController).isTryingAttacking)
             {
                 _anim.Play("Idle");
             }

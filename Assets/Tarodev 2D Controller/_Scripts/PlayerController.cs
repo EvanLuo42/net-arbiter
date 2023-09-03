@@ -25,7 +25,6 @@ namespace TarodevController
 
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
-
         public GameObject sceneTransitionAnimator;
         public GameObject playerVisual;
         // This is horrible, but for some reason colliders are not fully established when update starts...
@@ -35,17 +34,16 @@ namespace TarodevController
         private Vector3 checkpoints;
         void Start()
         {
-
             Invoke(nameof(Activate), 0.5f);
             _mainCamera = Camera.main;
             if(managedeath.Instance != null)
             {
                 transform.position = managedeath.Instance.lastPosition;
             }
-            foreach (GameObject manage in GameObject.FindGameObjectsWithTag("management"))
-            {
-                manage.GetComponent<managedeath>().Check();
-            }
+            //foreach (GameObject manage in GameObject.FindGameObjectsWithTag("management"))
+            //{
+            //    //manage.GetComponent<managedeath>().Check();
+            //}
             //rebouncecontroller.GetComponent<cunchuqi>().setPositionToWhatIsCollected();
         }
 
@@ -86,7 +84,9 @@ namespace TarodevController
             // OnDrawGizmos();
             MoveCharacter(); // Actually perform the axis movement
 
-            if (transform.position.y < -30) sceneTransitionAnimator.GetComponent<SceneTransitionController>().SetTransition(SceneManager.GetActiveScene().name);
+            if (transform.position.y >= -30) return;
+            sceneTransitionAnimator.GetComponent<SceneTransitionController>().SetTransition(/*SceneManager.GetActiveScene().name*/);
+            transform.position = managedeath.Instance.lastPosition;
         }
 
 
@@ -315,7 +315,8 @@ namespace TarodevController
             
             sceneTransitionAnimator
                 .GetComponent<SceneTransitionController>()
-                .SetTransition(SceneManager.GetActiveScene().name);
+                .SetTransition(/*SceneManager.GetActiveScene().name*/);
+            transform.position = managedeath.Instance.lastPosition;
         }
         private void setdeadcheck()
         {
@@ -386,6 +387,7 @@ namespace TarodevController
         [SerializeField] private float radius;
 
         public bool isAttacking;
+        public bool isTryingAttacking;
         private float _attackDeltaTime;
         private float _attackPassedTime;
         private float _cooldownDeltaTime;
@@ -426,10 +428,12 @@ namespace TarodevController
             {
                 _attackDeltaTime = 0;
                 isAttacking = false;
+                isTryingAttacking = false;
                 //Time.timeScale = 1;
             }
             if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0) && _cooldownDeltaTime >= attackCooldown)
             {
+                isTryingAttacking = true;
                 realStartTime = Time.realtimeSinceStartup;
                 Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, _livingEnemyLayer);
                 //Transform EnemyTarget = colliders.Select(x => x.transform)
