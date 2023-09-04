@@ -36,7 +36,7 @@ namespace TarodevController
         {
             Invoke(nameof(Activate), 0.5f);
             _mainCamera = Camera.main;
-<<<<<<< Updated upstream
+
             if(managedeath.Instance != null)
             {
                 transform.position = managedeath.Instance.lastPosition;
@@ -45,10 +45,10 @@ namespace TarodevController
             //{
             //    //manage.GetComponent<managedeath>().Check();
             //}
-=======
+
             if (managedeath.Instance == null) return;
             transform.position = managedeath.Instance.lastPosition;
->>>>>>> Stashed changes
+
             //rebouncecontroller.GetComponent<cunchuqi>().setPositionToWhatIsCollected();
         }
 

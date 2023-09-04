@@ -19790,6 +19790,9 @@ MonoBehaviour:
   _portallayer:
     serializedVersion: 2
     m_Bits: 2048
+  _checkpointlayer:
+    serializedVersion: 2
+    m_Bits: 4096
   _livingEnemyLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -19800,6 +19803,7 @@ MonoBehaviour:
   _detectionRayLength: 0.1
   _rayBuffer: 0.1
   _colPortal: 0
+  _colcheckpoint: 0
   _FinishPattern: 0
   SceneName: 
   attackTime: 0.15
@@ -19809,6 +19813,7 @@ MonoBehaviour:
   angleBeared: 20
   radius: 10
   isAttacking: 0
+  isTryingAttacking: 0
   dashTime: 0.15
   dashSpeed: 33
   dashCooldown: 0
@@ -19821,6 +19826,7 @@ MonoBehaviour:
   _fallClamp: -40
   _minFallSpeed: 80
   _maxFallSpeed: 120
+  _effectsInterval: 5
   bounceEnabled: 0
   overlapBoxSizeX: 0
   overlapBoxSizeY: 0
@@ -19904,6 +19910,7 @@ GameObject:
   - component: {fileID: 6432609861764478827}
   - component: {fileID: 6432609861764478826}
   - component: {fileID: 1025751691}
+  - component: {fileID: 4709125075805555164}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -19980,7 +19987,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &1025751691
 Animator:
-  serializedVersion: 5
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -19997,5 +20004,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4709125075805555164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6432609861764478824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8532cbe9e8f3714e9022258193a65e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visual: {fileID: 5124300410236407460}
